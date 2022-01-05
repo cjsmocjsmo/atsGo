@@ -1,0 +1,63 @@
+function initLoadReviews() {
+    $('.review1').empty();
+    $.get('http://192.168.0.90:3200/AllReviews', function (data) {
+        console.log(data);
+        $.each(data, function (key, val) {
+            let one = "<div class='rev-card'>";
+            let two = "<div class='rev-card-body'>";
+            let three = "<h5 class='rev-card-title'>Review</h5>";
+            let four = "<p class='rev-cbod'>" + val.Message + "</p>";
+            let five = "<p class='rev-csig'>" + val.Sig + "</p>";
+            let six = "</div></div>";
+            let newReview = one + two + three + four + five + six;
+            console.log(newReview);
+            $('.review1').append(newReview);
+        })
+    })
+}
+
+function initLoadQReviews() {
+    $('.reviewadmin').empty();
+    $.get('http://192.168.0.90:3200/AllQReviews', function (data) {
+        console.log(data);
+        $.each(data, function (key, val) {
+            let one = "<div class='rev-card'>";
+            let two = "<div class='rev-card-body'>";
+            let three = "<h5 class='rev-card-title'>Review</h5>";
+            let threea = "<p>" + val.Name + "</p>";
+            let threeb = "<p>" + val.Email + "</p>"
+            let four = "<p class='rev-cbod'>" + val.Message + "</p>";
+            let five = "<p class='rev-csig'>" + val.Sig + "</p>";
+            let six = "</div></div>";
+            let newReview = one + two + three + four + five + six;
+            console.log(newReview);
+            $('.reviewadmin').append(newReview);
+        })
+    })
+}
+
+$(document).ready(function () {
+    initLoadReviews();
+    initLoadQReviews();
+    $("#revInput").click(function (event) {
+    event.preventDefault();
+    let name = $("#name").val();
+    let email = $("#email").val();
+    let message = $("#message").val();
+    console.log(name);
+    console.log(email);
+    console.log(message);
+    $.get('atq',
+        {
+            'name': name,
+            'email': email,
+            'message': message,
+        },
+        function (data) {
+            console.log("sucess");
+        })
+    $("#name").val("");
+    $("#email").val("");
+    $("#message").val("");
+    });
+});

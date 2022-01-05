@@ -1,0 +1,33 @@
+version: "3.3"
+
+services:
+  db:
+    image: mongo:4.4
+    container_name: "atsGo_container"
+    networks:
+      - atsGo
+    ports:
+      - 27017:27017
+
+  atsGo:
+    image: ampgo:0.0.10
+    build: .
+    environment:
+      - ATSGO_DB_ADDR="mongodb://db:27017/atsgodb"
+    networks:
+      - atsGo
+    ports:
+      - 3200:3200
+    depends_on:
+      - db
+
+networks:
+  atsGo:
+
+volumes:
+  mongovol:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/pipi/Data/db
+      o: bind
