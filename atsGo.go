@@ -75,7 +75,7 @@ func CheckError(err error, msg string) {
 ///////////////////////////////////////////////////////////////////////////////
 
 func ShowMain(w http.ResponseWriter, r *http.Request) {
-	tmppath := "./static/alphatree2.html"
+	tmppath := "./static/alphatree.html"
 	tmpl := template.Must(template.ParseFiles(tmppath))
 	tmpl.Execute(w, tmpl)
 }

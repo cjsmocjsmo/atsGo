@@ -21,15 +21,16 @@ function initLoadQReviews() {
     $.get('http://192.168.0.90:3200/AllQReviews', function (data) {
         console.log(data);
         $.each(data, function (key, val) {
-            let one = "<div class='rev-card'>";
-            let two = "<div class='rev-card-body'>";
-            let three = "<h5 class='rev-card-title'>Review</h5>";
+            let one = "<div >";
+            let two = "<div >";
+            let three = "<h5 >Review" + key + "</h5>";
             let threea = "<p>" + val.Name + "</p>";
             let threeb = "<p>" + val.Email + "</p>"
-            let four = "<p class='rev-cbod'>" + val.Message + "</p>";
-            let five = "<p class='rev-csig'>" + val.Sig + "</p>";
+            let threec = "<p>" + val.UUID + "</p>"
+            let four = "<p >" + val.Message + "</p>";
+            let five = "<p >" + val.Sig + "</p>";
             let six = "</div></div>";
-            let newReview = one + two + three + four + five + six;
+            let newReview = one + two + three + threea + threeb + threec + four + five + six;
             console.log(newReview);
             $('.reviewadmin').append(newReview);
         })
