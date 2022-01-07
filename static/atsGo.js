@@ -1,6 +1,6 @@
 function initLoadReviews() {
     $('.review1').empty();
-    $.get('http://192.168.0.90:3200/AllReviews', function (data) {
+    $.get('http://192.168.0.90:3200/AllApprovedReviews', function (data) {
         console.log(data);
         $.each(data, function (key, val) {
             let one = "<div class='rev-card'>";
@@ -21,15 +21,15 @@ function initLoadQReviews() {
     $.get('http://192.168.0.90:3200/AllQReviews', function (data) {
         console.log(data);
         $.each(data, function (key, val) {
-            let one = "<div >";
-            let two = "<div >";
+            let one = "<div class='reviewTop' style='margin: 1em' id='" + val.UUID + "'>";
+            let two = "<div class='qborder'>";
             let three = "<h5 >Review" + key + "</h5>";
-            let threea = "<p>" + val.Name + "</p>";
-            let threeb = "<p>" + val.Email + "</p>"
-            let threec = "<p>" + val.UUID + "</p>"
-            let four = "<p >" + val.Message + "</p>";
-            let five = "<p >" + val.Sig + "</p>";
-            let six = "</div></div>";
+            let threea = "<p>Name: " + val.Name + "</p>";
+            let threeb = "<p>Email: " + val.Email + "</p>"
+            let threec = "<p>Unique ID: " + val.UUID + "</p>"
+            let four = "<p>Message: " + val.Message + "</p>";
+            let five = "<p>Signature: " + val.Sig + "</p>";
+            let six = "<button class='delBtn' data-delBtnId='" + val.UUID + "'>Delete Review</button></div></div>"
             let newReview = one + two + three + threea + threeb + threec + four + five + six;
             console.log(newReview);
             $('.reviewadmin').append(newReview);
@@ -49,16 +49,29 @@ $(document).ready(function () {
     console.log(email);
     console.log(message);
     $.get('atq',
-        {
-            'name': name,
-            'email': email,
-            'message': message,
-        },
-        function (data) {
-            console.log("sucess");
-        })
+    {
+        'name': name,
+        'email': email,
+        'message': message,
+    },
+    function (data) {
+        console.log("sucess");
+    })
     $("#name").val("");
     $("#email").val("");
     $("#message").val("");
     });
+
+    $(".delBtn").click(function(){
+        let reviewToDeleteUUID = $(this).attr('data-delBtnId');
+        $("#reviewToDeleteUUID").empty();
+        $.get('DeleteReview',
+        {
+            'uuid': reviewToDeleteUUID,
+        },
+        function (data) {
+            console.log("set Delete sucess");
+        })
+
+    })
 });

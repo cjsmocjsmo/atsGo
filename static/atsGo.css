@@ -83,8 +83,6 @@ hr {
   flex-direction: row;
   align-items: top;
   justify-content: space-evenly;
-  /* margin-top: 2em;
-  margin-bottom: 5em; */
   background-color: salmon;
   height: fit-content;
   border: 4px solid yellowgreen;
@@ -92,9 +90,16 @@ hr {
 
 }
 
-/* .rev-card-body {
-  border-radius: 7px;
-} */
+.adminBtn {
+  padding: 5px;
+  font-size: large;
+}
+
+.qborder {
+  border: 4px solid black;
+  padding: 10px;
+  margin:auto;
+}
 
 .rev-csig {
   color: black;
@@ -374,7 +379,7 @@ section.section2 {
 
 
 @media (max-width: 769px) {
-  header {
+  header .container {
     max-height: 200px;
   }
 
@@ -392,7 +397,7 @@ section.section2 {
 
 @media (max-width: 540px) {
 
-  header {
+  header .container {
     max-height: 150px;
   }
 
@@ -416,6 +421,7 @@ section.section2 {
   .sectionCard {
     flex-direction: column;
     height: fit-content;
+    margin:auto;
   }
 
   .cardDiv {
@@ -425,7 +431,7 @@ section.section2 {
 }
 
 @media (max-width: 365px) {
-  header {
+  header .container {
     max-height: 110px;
   }
 
@@ -439,8 +445,10 @@ section.section2 {
 
 body.main {
   background-color: grey;
+  width: 98%
 }
 body.admin {
+  width: 88%;
   background-color: chocolate;
 }
 header {
@@ -461,12 +469,13 @@ header {
 
   /* height: 300px; */
   height: 420px;
-  /* position: relative;
-  overflow: hidden; */
+ 
+  position: relative;
+  overflow: hidden;
 }
 
 .photo {
-  width: 100%;
+  width: 99%;
   position: absolute;
   animation: round 48s infinite;
   opacity: 0;

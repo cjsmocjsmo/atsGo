@@ -57,6 +57,12 @@ func InsertOne(client *mongo.Client, ctx context.Context, dataBase, col string, 
 	return result, err
 }
 
+func UpdateOne(client *mongo.Client, ctx context.Context, filter interface{}, dataBase string, col string, doc interface{}) (*mongo.UpdateResult, error) {
+	collection := client.Database(dataBase).Collection(col)
+	result, err := collection.UpdateOne(ctx, filter, doc)
+	return result, err
+}
+
 func Query(client *mongo.Client, ctx context.Context, dataBase, col string, query, field interface{}) (result *mongo.Cursor, err error) {
 	collection := client.Database(dataBase).Collection(col)
 	result, err = collection.Find(ctx, query, options.Find().SetProjection(field))
@@ -78,6 +84,12 @@ func ShowMain(w http.ResponseWriter, r *http.Request) {
 	tmppath := "./static/alphatree.html"
 	tmpl := template.Must(template.ParseFiles(tmppath))
 	tmpl.Execute(w, tmpl)
+}
+
+func ShowAdmin(w http.ResponseWriter, r *http.Request) {
+	showtmppath := "./static/admin.html"
+	showtmpl := template.Must(template.ParseFiles(showtmppath))
+	showtmpl.Execute(w, showtmpl)
 }
 
 func AlphaT_Insert(db string, coll string, ablob ReviewStruct) {
@@ -102,26 +114,32 @@ func AddToQuarantineHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		sig = ""
 	}
+
+	ct := time.Now()
+	date := ct.Format("01-01-2021")
+
 	var newReview = ReviewStruct{
 		UUID:       uuid,
+		Date:       date,
 		Name:       name,
 		Email:      email,
 		Sig:        sig,
 		Message:    message,
 		Approved:   "no",
 		Quarintine: "yes",
+		Delete:     "no",
 	}
-	AlphaT_Insert("qdb", "quarintine", newReview)
+	AlphaT_Insert("maindb", "main", newReview)
 }
 
 func AllQuarintineReviewsHandler(w http.ResponseWriter, r *http.Request) {
-	filter := bson.M{}
+	filter := bson.M{"approved": "no", "quarintine": "yes", "delete": "no"}
 	opts := options.Find()
 	opts.SetProjection(bson.M{"_id": 0})
-	client, ctx, cancel, err := Connect("mongodb://db:27017/ampgodb")
+	client, ctx, cancel, err := Connect("mongodb://db:27017/alphatree")
 	defer Close(client, ctx, cancel)
 	CheckError(err, "MongoDB connection has failed")
-	coll := client.Database("qdb").Collection("quarintine")
+	coll := client.Database("maindb").Collection("main")
 	cur, err := coll.Find(context.TODO(), filter, opts)
 	CheckError(err, "AllQuarintineReviews find has failed")
 	var allQRevs []ReviewStruct
@@ -134,11 +152,11 @@ func AllQuarintineReviewsHandler(w http.ResponseWriter, r *http.Request) {
 	log.Println("AllQuarintineReviews Info Complete")
 }
 
-func AllReviewsHandler(w http.ResponseWriter, r *http.Request) {
-	filter := bson.M{}
+func AllApprovedReviewsHandler(w http.ResponseWriter, r *http.Request) {
+	filter := bson.M{"approved": "yes", "quarintine": "no", "delete": "no"}
 	opts := options.Find()
 	opts.SetProjection(bson.M{"_id": 0})
-	client, ctx, cancel, err := Connect("mongodb://db:27017/ampgodb")
+	client, ctx, cancel, err := Connect("mongodb://db:27017/alphatree")
 	defer Close(client, ctx, cancel)
 	CheckError(err, "MongoDB connection has failed")
 	coll := client.Database("maindb").Collection("main")
@@ -162,25 +180,29 @@ func ProcessQuarantine(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func DeleteReview(w http.ResponseWriter, r *http.Request) {
+func SetReviewToDeleteHandler(w http.ResponseWriter, r *http.Request) {
+	var delUUID string = r.URL.Query().Get("uuid")
+	filter := bson.M{"uuid": delUUID}
+	update := bson.D{{"$set", bson.D{{"delete", "yes"}}}}
 
-}
+	client, ctx, cancel, err := Connect("mongodb://db:27017/alphatree")
+	defer Close(client, ctx, cancel)
+	CheckError(err, "MongoDB connection has failed")
 
-func ShowAdmin(w http.ResponseWriter, r *http.Request) {
-	showtmppath := "./static/admin.html"
-	showtmpl := template.Must(template.ParseFiles(showtmppath))
-	showtmpl.Execute(w, showtmpl)
+	UpdateOne(client, ctx, filter, "maindb", "main", update)
 }
 
 // INIT STUFF
 type ReviewStruct struct {
 	UUID       string `yaml:"UUID"`
+	Date       string `yaml:"Date"`
 	Name       string `yaml:"Name"`
 	Email      string `yaml:"Email"`
 	Sig        string `yaml:"Sig"`
 	Message    string `yaml:"Message"`
 	Approved   string `yaml:"Approved"`
 	Quarintine string `yaml:"Quarintine"`
+	Delete     string `yaml:"Delete"`
 }
 
 func (c *ReviewStruct) Parse(data []byte) error {
@@ -193,11 +215,6 @@ func init() {
 		log.Fatal(err)
 	}
 
-	data2, err := ioutil.ReadFile("./static/review2.yaml")
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	var rev1 ReviewStruct
 	if err := rev1.Parse(data); err != nil {
 		log.Fatal(err)
@@ -205,12 +222,42 @@ func init() {
 	fmt.Println(rev1)
 	AlphaT_Insert("maindb", "main", rev1)
 
+	data2, err := ioutil.ReadFile("./static/review2.yaml")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	var rev2 ReviewStruct
 	if err := rev2.Parse(data2); err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println(rev2)
 	AlphaT_Insert("maindb", "main", rev2)
+
+	data3, err := ioutil.ReadFile("./static/fake1.yaml")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var rev3 ReviewStruct
+	if err := rev3.Parse(data3); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(rev3)
+	AlphaT_Insert("maindb", "main", rev3)
+
+	data4, err := ioutil.ReadFile("./static/fake2.yaml")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var rev4 ReviewStruct
+	if err := rev4.Parse(data4); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(rev4)
+	AlphaT_Insert("maindb", "main", rev4)
+
 }
 
 func main() {
@@ -218,7 +265,8 @@ func main() {
 	r.HandleFunc("/alphatree", ShowMain)
 	r.HandleFunc("/alphatree/admin", ShowAdmin)
 	r.HandleFunc("/AllQReviews", AllQuarintineReviewsHandler)
-	r.HandleFunc("/AllReviews", AllReviewsHandler)
+	r.HandleFunc("/AllApprovedReviews", AllApprovedReviewsHandler)
+	r.HandleFunc("/DeleteReview", SetReviewToDeleteHandler)
 	r.HandleFunc("/atq", AddToQuarantineHandler)
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
 	port := ":3200"
