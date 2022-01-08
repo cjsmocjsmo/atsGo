@@ -20,6 +20,7 @@ RUN \
   mkdir ./data/db && \
   mkdir ./static && \
   mkdir ./static/images && \
+  mkdir ./backups && \
   chmod -R +rwx ./static
 
 COPY static/images/icons/*.svg ./static/images/icons/
@@ -32,6 +33,9 @@ COPY static/*.html ./static/
 COPY static/*.css ./static/
 COPY static/*.js ./static/
 COPY static/*.yaml ./static/
+
+COPY backup/*.json ./backups/
+COPY backup/*.sh ./backups/
 
 RUN \
   mkdir ./fsData && \

@@ -10,7 +10,6 @@ function initLoadReviews() {
             let five = "<p class='rev-csig'>" + val.Sig + "</p>";
             let six = "</div></div>";
             let newReview = one + two + three + four + five + six;
-            console.log(newReview);
             $('.review1').append(newReview);
         })
     })
@@ -31,23 +30,18 @@ function initLoadQReviews() {
             let five = "<p>Signature: " + val.Sig + "</p>";
             let six = "<button class='delBtn' data-delBtnId='" + val.UUID + "'>Delete Review</button></div></div>"
             let newReview = one + two + three + threea + threeb + threec + four + five + six;
-            console.log(newReview);
             $('.reviewadmin').append(newReview);
         })
     })
 }
 
-$(document).ready(function () {
-    initLoadReviews();
-    initLoadQReviews();
-    $("#revInput").click(function (event) {
+
+
+$(document).on("click", "#revInput", function (event) {
     event.preventDefault();
     let name = $("#name").val();
     let email = $("#email").val();
     let message = $("#message").val();
-    console.log(name);
-    console.log(email);
-    console.log(message);
     $.get('atq',
     {
         'name': name,
@@ -60,18 +54,38 @@ $(document).ready(function () {
     $("#name").val("");
     $("#email").val("");
     $("#message").val("");
-    });
-
-    $(".delBtn").click(function(){
-        let reviewToDeleteUUID = $(this).attr('data-delBtnId');
-        $("#reviewToDeleteUUID").empty();
-        $.get('DeleteReview',
-        {
-            'uuid': reviewToDeleteUUID,
-        },
-        function (data) {
-            console.log("set Delete sucess");
-        })
-
+    }
+)
+.on("click", ".delBtn", function() {
+    let rtd = $(this).attr('data-delBtnId');
+    let reviewToDeleteUUID = "#" + rtd
+    $(reviewToDeleteUUID).empty();
+    console.log(reviewToDeleteUUID)
+    $.get('/DeleteReview',
+    {
+        'uuid': rtd,
+    },
+    function (data) {
+        console.log("set Delete sucess");
     })
+})
+.on("click", "#accept", function(){
+    $.get('/ProcessQuarintine',
+    {},
+    function (data) {
+        console.log("set Delete sucess");
+    })
+})
+.on("click", "#backup", function(){
+    $.get('/Backup',
+    {},
+    function (data) {
+        console.log("set Backup sucess");
+    })
+});
+
+
+$(document).ready(function () {
+    initLoadReviews();
+    initLoadQReviews(); 
 });

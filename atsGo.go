@@ -7,15 +7,16 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+	"gopkg.in/yaml.v2"
 	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
 	// "os"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
-	"gopkg.in/yaml.v2"
+	"os/exec"
 	"strings"
 	"time"
 )
@@ -57,9 +58,9 @@ func InsertOne(client *mongo.Client, ctx context.Context, dataBase, col string, 
 	return result, err
 }
 
-func UpdateOne(client *mongo.Client, ctx context.Context, filter interface{}, dataBase string, col string, doc interface{}) (*mongo.UpdateResult, error) {
+func UpdateOne(client *mongo.Client, ctx context.Context, filter interface{}, dataBase string, col string, update interface{}) (*mongo.UpdateResult, error) {
 	collection := client.Database(dataBase).Collection(col)
-	result, err := collection.UpdateOne(ctx, filter, doc)
+	result, err := collection.UpdateOne(ctx, filter, update, options.Update().SetUpsert(true))
 	return result, err
 }
 
@@ -172,24 +173,54 @@ func AllApprovedReviewsHandler(w http.ResponseWriter, r *http.Request) {
 	log.Println("AllReviews Info Complete")
 }
 
-func GetOneReview(w http.ResponseWriter, r *http.Request) {
-
-}
-
-func ProcessQuarantine(w http.ResponseWriter, r *http.Request) {
-
-}
-
 func SetReviewToDeleteHandler(w http.ResponseWriter, r *http.Request) {
 	var delUUID string = r.URL.Query().Get("uuid")
 	filter := bson.M{"uuid": delUUID}
-	update := bson.D{{"$set", bson.D{{"delete", "yes"}}}}
-
+	update := bson.M{"$set": bson.M{"delete": "yes"}}
 	client, ctx, cancel, err := Connect("mongodb://db:27017/alphatree")
 	defer Close(client, ctx, cancel)
 	CheckError(err, "MongoDB connection has failed")
-
 	UpdateOne(client, ctx, filter, "maindb", "main", update)
+}
+
+func ProcessQuarantineHandler(w http.ResponseWriter, r *http.Request) {
+	filter := bson.M{}
+	opts := options.Find()
+	opts.SetProjection(bson.M{"_id": 0})
+	client, ctx, cancel, err := Connect("mongodb://db:27017/alphatree")
+	defer Close(client, ctx, cancel)
+	CheckError(err, "MongoDB connection has failed")
+	coll := client.Database("maindb").Collection("main")
+	cur, err := coll.Find(context.TODO(), filter, opts)
+	CheckError(err, "AllQuarintineReviews find has failed")
+	var allRevs []ReviewStruct
+	if err = cur.All(context.TODO(), &allRevs); err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("%s this is AllQuarintineReviews-", allRevs)
+
+	for _, rev := range allRevs {
+		filter := bson.M{"uuid": rev.UUID}
+		update := bson.M{"$set": bson.M{"approved": "yes", "quarintine": "no"}}
+		client, ctx, cancel, err := Connect("mongodb://db:27017/alphatree")
+		defer Close(client, ctx, cancel)
+		CheckError(err, "MongoDB connection has failed")
+		UpdateOne(client, ctx, filter, "maindb", "main", update)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode("Update complete")
+	log.Println("AllQuarintineReviews Info Complete")
+}
+
+func BackupReviewHandler(w http.ResponseWriter, r *http.Request) {
+	exec.Command("/bin/sh", "./backup/backup.sh")
+	content, err := ioutil.ReadFile("/backup/backup.json") // the file is inside the local directory
+	if err != nil {
+		fmt.Println("Err")
+	}
+	fmt.Println(content)
+
 }
 
 // INIT STUFF
@@ -263,9 +294,11 @@ func init() {
 func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/alphatree", ShowMain)
-	r.HandleFunc("/alphatree/admin", ShowAdmin)
+	r.HandleFunc("/admin", ShowAdmin)
 	r.HandleFunc("/AllQReviews", AllQuarintineReviewsHandler)
 	r.HandleFunc("/AllApprovedReviews", AllApprovedReviewsHandler)
+	r.HandleFunc("/ProcessQuarintine", ProcessQuarantineHandler)
+	r.HandleFunc("/Backup", BackupReviewHandler)
 	r.HandleFunc("/DeleteReview", SetReviewToDeleteHandler)
 	r.HandleFunc("/atq", AddToQuarantineHandler)
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
