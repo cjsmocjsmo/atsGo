@@ -74,6 +74,9 @@ $(document).on("click", "#revInput", function (event) {
     {},
     function (data) {
         console.log("set Delete sucess");
+        // $('.reviewadmin').empty();
+        let procMess = "<h1>All reviews processed</h1>"
+        $('.reviewadmin').empty().append(procMess);
     })
 })
 .on("click", "#backup", function(){
@@ -82,6 +85,13 @@ $(document).on("click", "#revInput", function (event) {
     function (data) {
         console.log("set Backup sucess");
     })
+})
+.on("click", "#name", function(){
+    $("#name").val("")
+
+})
+.on("click", "#email", function(){
+    $("#email").val("")
 });
 
 

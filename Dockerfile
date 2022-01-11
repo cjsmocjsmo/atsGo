@@ -20,22 +20,18 @@ RUN \
   mkdir ./data/db && \
   mkdir ./static && \
   mkdir ./static/images && \
-  mkdir ./backups && \
+  mkdir ./backup && \
   chmod -R +rwx ./static
 
 COPY static/images/icons/*.svg ./static/images/icons/
 COPY static/images/icons/*.png ./static/images/icons/
-
-COPY static/images/*.jpg ./static/images/
 COPY static/images/*.webp ./static/images/
-
 COPY static/*.html ./static/
 COPY static/*.css ./static/
 COPY static/*.js ./static/
 COPY static/*.yaml ./static/
-
-COPY backup/*.json ./backups/
-COPY backup/*.sh ./backups/
+COPY backup/*.json ./backup/
+COPY backup/*.gz ./backup/
 
 RUN \
   mkdir ./fsData && \
@@ -43,7 +39,8 @@ RUN \
   mkdir ./fsData/crap && \
   chmod -R +rwx ./fsData && \
   mkdir ./logs && \
-  chmod -R +rwx ./logs
+  chmod -R +rwx ./logs && \
+  chmod -R +rwx ./backup
 
 STOPSIGNAL SIGINT
 CMD ["./main"]

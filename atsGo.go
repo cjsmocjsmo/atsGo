@@ -15,10 +15,16 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	// "os"
-	"os/exec"
+	"os"
+	// "os/exec"
+	"gopkg.in/gomail.v2"
+	// "net/smtp"
+
 	"strings"
 	"time"
+
+	"bufio"
+	"compress/gzip"
 )
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -131,6 +137,22 @@ func AddToQuarantineHandler(w http.ResponseWriter, r *http.Request) {
 		Delete:     "no",
 	}
 	AlphaT_Insert("maindb", "main", newReview)
+
+	// tstamp := now1.Format(time.Stamp)
+	m1 := "<p>A new review was posted</p>"
+	m2 := "<a href='https://atssbstrap.pages.dev'>AlphaTreeService Admin Page</>"
+	m3 := m1 + m2
+
+	m := gomail.NewMessage()
+	m.SetHeader("From", "porthose.cjsmo.cjsmo@gmail.com")
+	m.SetHeader("To", "porthose.cjsmo.cjsmo@gmail.com", "Alpha.treeservivecdm@gmail.com")
+	m.SetHeader("Subject: NEW REVIEW Has Been Posted")
+	m.SetBody("text/html", m3)
+
+	d := gomail.NewDialer("smtp.gmail.com", 587, "porthose.cjsmo.cjsmo@gmail.com", "!Porthose1960")
+	if err := d.DialAndSend(m); err != nil {
+		panic(err)
+	}
 }
 
 func AllQuarintineReviewsHandler(w http.ResponseWriter, r *http.Request) {
@@ -214,13 +236,54 @@ func ProcessQuarantineHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func BackupReviewHandler(w http.ResponseWriter, r *http.Request) {
-	exec.Command("/bin/sh", "./backup/backup.sh")
-	content, err := ioutil.ReadFile("/backup/backup.json") // the file is inside the local directory
-	if err != nil {
-		fmt.Println("Err")
+	filter := bson.M{}
+	opts := options.Find()
+	opts.SetProjection(bson.M{"_id": 0})
+	client, ctx, cancel, err := Connect("mongodb://db:27017/alphatree")
+	defer Close(client, ctx, cancel)
+	CheckError(err, "MongoDB connection has failed")
+	coll := client.Database("maindb").Collection("main")
+	cur, err := coll.Find(context.TODO(), filter, opts)
+	CheckError(err, "AllReviews find has failed")
+	var allRevs []ReviewStruct
+	if err = cur.All(context.TODO(), &allRevs); err != nil {
+		log.Fatal(err)
 	}
-	fmt.Println(content)
+	bString, _ := json.Marshal(allRevs)
 
+	err = ioutil.WriteFile("/root/backup/backup.json", bString, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	name_of_file := "backup.json"
+	f, _ := os.Open("/root/backup/" + name_of_file)
+	read := bufio.NewReader(f)
+	data, _ := ioutil.ReadAll(read)
+	name_of_file = strings.Replace(name_of_file, ".json", ".gz", -1)
+	f, _ = os.Create("/root/backup/" + name_of_file)
+	ww := gzip.NewWriter(f)
+	ww.Write(data)
+	ww.Close()
+
+	t := time.Now().Format(time.RFC3339)
+	tstring := string(t)
+
+	s := "<p>THIS IS A TEST PLEASE DELETE</p><p>AlphaTreeService Reviews Backup for: " + tstring + "</p>"
+	fmt.Println("this is s")
+	fmt.Println(s)
+
+	m := gomail.NewMessage()
+	m.SetHeader("From", "porthose.cjsmo.cjsmo@gmail.com")
+	m.SetHeader("To", "porthose.cjsmo.cjsmo@gmail.com", "Alpha.treeservivecdm@gmail.com")
+	m.SetHeader("Subject: (TEST)AlphaTreeService Reviews Backup")
+	m.SetBody("text/html", s)
+	m.Attach("/root/backup/" + name_of_file)
+
+	d := gomail.NewDialer("smtp.gmail.com", 587, "porthose.cjsmo.cjsmo@gmail.com", "!Porthose1960")
+	if err := d.DialAndSend(m); err != nil {
+		panic(err)
+	}
 }
 
 // INIT STUFF
@@ -288,7 +351,6 @@ func init() {
 	}
 	fmt.Println(rev4)
 	AlphaT_Insert("maindb", "main", rev4)
-
 }
 
 func main() {
