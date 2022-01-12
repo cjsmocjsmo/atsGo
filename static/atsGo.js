@@ -35,7 +35,16 @@ function initLoadQReviews() {
     })
 }
 
+// function hideMainDiv() {
+//     $(".mainDiv").css("display", "none")
+// }
 
+function fadeinout() {
+    
+    $('.aniMain').delay(2500).fadeOut('fast');
+    $('.mainDiv').delay(1500).fadeIn('slow');
+    
+}
 
 $(document).on("click", "#revInput", function (event) {
     event.preventDefault();
@@ -43,59 +52,60 @@ $(document).on("click", "#revInput", function (event) {
     let email = $("#email").val();
     let message = $("#message").val();
     $.get('atq',
-    {
-        'name': name,
-        'email': email,
-        'message': message,
-    },
-    function (data) {
-        console.log("sucess");
-    })
+        {
+            'name': name,
+            'email': email,
+            'message': message,
+        },
+        function (data) {
+            console.log("sucess");
+        })
     $("#name").val("");
     $("#email").val("");
     $("#message").val("");
-    }
-)
-.on("click", ".delBtn", function() {
-    let rtd = $(this).attr('data-delBtnId');
-    let reviewToDeleteUUID = "#" + rtd
-    $(reviewToDeleteUUID).empty();
-    console.log(reviewToDeleteUUID)
-    $.get('/DeleteReview',
-    {
-        'uuid': rtd,
-    },
-    function (data) {
-        console.log("set Delete sucess");
-    })
 })
-.on("click", "#accept", function(){
-    $.get('/ProcessQuarintine',
-    {},
-    function (data) {
-        console.log("set Delete sucess");
-        // $('.reviewadmin').empty();
-        let procMess = "<h1>All reviews processed</h1>"
-        $('.reviewadmin').empty().append(procMess);
+    .on("click", ".delBtn", function () {
+        let rtd = $(this).attr('data-delBtnId');
+        let reviewToDeleteUUID = "#" + rtd
+        $(reviewToDeleteUUID).empty();
+        console.log(reviewToDeleteUUID)
+        $.get('/DeleteReview',
+            {
+                'uuid': rtd,
+            },
+            function (data) {
+                console.log("set Delete sucess");
+            })
     })
-})
-.on("click", "#backup", function(){
-    $.get('/Backup',
-    {},
-    function (data) {
-        console.log("set Backup sucess");
+    .on("click", "#accept", function () {
+        $.get('/ProcessQuarintine',
+            {},
+            function (data) {
+                console.log("set Delete sucess");
+                // $('.reviewadmin').empty();
+                let procMess = "<h1>All reviews processed</h1>"
+                $('.reviewadmin').empty().append(procMess);
+            })
     })
-})
-.on("click", "#name", function(){
-    $("#name").val("")
+    .on("click", "#backup", function () {
+        $.get('/Backup',
+            {},
+            function (data) {
+                console.log("set Backup sucess");
+            })
+    })
+    .on("click", "#name", function () {
+        $("#name").val("")
 
-})
-.on("click", "#email", function(){
-    $("#email").val("")
-});
+    })
+    .on("click", "#email", function () {
+        $("#email").val("")
+    });
 
 
 $(document).ready(function () {
+    fadeinout();
     initLoadReviews();
-    initLoadQReviews(); 
+    initLoadQReviews();
+    
 });

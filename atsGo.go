@@ -145,7 +145,7 @@ func AddToQuarantineHandler(w http.ResponseWriter, r *http.Request) {
 
 	m := gomail.NewMessage()
 	m.SetHeader("From", "porthose.cjsmo.cjsmo@gmail.com")
-	m.SetHeader("To", "porthose.cjsmo.cjsmo@gmail.com", "Alpha.treeservivecdm@gmail.com")
+	m.SetHeader("To", "porthose.cjsmo.cjsmo@gmail.com", "Alpha.treeservicecdm@gmail.com")
 	m.SetHeader("Subject: NEW REVIEW Has Been Posted")
 	m.SetBody("text/html", m3)
 
@@ -275,7 +275,7 @@ func BackupReviewHandler(w http.ResponseWriter, r *http.Request) {
 
 	m := gomail.NewMessage()
 	m.SetHeader("From", "porthose.cjsmo.cjsmo@gmail.com")
-	m.SetHeader("To", "porthose.cjsmo.cjsmo@gmail.com", "Alpha.treeservivecdm@gmail.com")
+	m.SetHeader("To", "porthose.cjsmo.cjsmo@gmail.com", "Alpha.treeservicecdm@gmail.com")
 	m.SetHeader("Subject: (TEST)AlphaTreeService Reviews Backup")
 	m.SetBody("text/html", s)
 	m.Attach("/root/backup/" + name_of_file)
