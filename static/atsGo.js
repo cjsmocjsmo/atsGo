@@ -35,15 +35,9 @@ function initLoadQReviews() {
     })
 }
 
-// function hideMainDiv() {
-//     $(".mainDiv").css("display", "none")
-// }
-
 function fadeinout() {
-    
-    $('.aniMain').delay(2500).fadeOut('fast');
-    $('.mainDiv').delay(1500).fadeIn('slow');
-    
+    $('.aniMain').delay(2750).fadeOut(750);
+    $('.mainDiv').delay(3575).fadeIn(1000);
 }
 
 $(document).on("click", "#revInput", function (event) {
