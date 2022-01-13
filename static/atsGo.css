@@ -459,7 +459,7 @@ section.section2 {
 
 
 body.main {
-  background-color: brown;
+  background-color: black;
 }
 
 body.admin {
@@ -470,7 +470,6 @@ body.admin {
 .mainDiv {
   display: none;
 }
-
 
 header {
   width: 100%;
@@ -556,7 +555,8 @@ img:nth-child(8) {
 		}
 	}
 	.animated-title {
-		color: #222;
+    color: brown;
+		/* color: #222; */
 		font-family: Roboto, Arial, sans-serif;
 		height: 90vmin;
 		left: 50%;
