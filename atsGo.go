@@ -140,7 +140,7 @@ func AddToQuarantineHandler(w http.ResponseWriter, r *http.Request) {
 
 	// tstamp := now1.Format(time.Stamp)
 	m1 := "<p>A new review was posted</p>"
-	m2 := "<a href='https://atssbstrap.pages.dev'>AlphaTreeService Admin Page</>"
+	m2 := "<a href='http://34.127.50.188/Admin'>AlphaTreeService Admin Page</>"
 	m3 := m1 + m2
 
 	m := gomail.NewMessage()
