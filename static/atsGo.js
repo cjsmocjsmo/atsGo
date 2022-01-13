@@ -1,6 +1,6 @@
 function initLoadReviews() {
     $('.review1').empty();
-    $.get('http://192.168.0.90:3200/AllApprovedReviews', function (data) {
+    $.get('http://192.168.0.90/AllApprovedReviews', function (data) {
         console.log(data);
         $.each(data, function (key, val) {
             let one = "<div class='rev-card'>";
@@ -17,7 +17,7 @@ function initLoadReviews() {
 
 function initLoadQReviews() {
     $('.reviewadmin').empty();
-    $.get('http://192.168.0.90:3200/AllQReviews', function (data) {
+    $.get('http://192.168.0.90/AllQReviews', function (data) {
         console.log(data);
         $.each(data, function (key, val) {
             let one = "<div class='reviewTop' style='margin: 1em' id='" + val.UUID + "'>";

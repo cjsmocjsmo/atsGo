@@ -17,17 +17,9 @@ services:
     networks:
       - atsGo
     ports:
-      - 3200:3200
+      - 80:80
     depends_on:
       - db
       
 networks:
   atsGo:
-
-# volumes:
-#   atsgovol:
-#     driver: local
-#     driver_opts:
-#       type: none
-#       device: /home/charliepi/Backups/
-#       o: bind
