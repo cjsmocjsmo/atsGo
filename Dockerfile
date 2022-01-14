@@ -20,18 +20,23 @@ RUN \
   mkdir ./data/db && \
   mkdir ./static && \
   mkdir ./static/images && \
-  mkdir ./backup && \
-  chmod -R +rwx ./static
+  mkdir ./static/images/kitsappics && \
+  mkdir ./static/images/masonpics && \
+  mkdir ./static/images/piercepics && \
+  mkdir ./backup
 
-COPY static/images/icons/*.svg ./static/images/icons/
-COPY static/images/icons/*.png ./static/images/icons/
+COPY backup/*.json ./backup/
+COPY backup/*.gz ./backup/
 COPY static/images/*.webp ./static/images/
+COPY static/images/kitsappics/ ./static/images/kitsappics/
+COPY static/images/masonpics/ ./static/images/masonpics/
+COPY static/images/piercepics/ ./static/images/piercepics/
 COPY static/*.html ./static/
 COPY static/*.css ./static/
 COPY static/*.js ./static/
 COPY static/*.yaml ./static/
-COPY backup/*.json ./backup/
-COPY backup/*.gz ./backup/
+RUN chmod -R +rwx ./static
+
 
 RUN \
   mkdir ./fsData && \

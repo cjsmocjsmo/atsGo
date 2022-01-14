@@ -19,7 +19,7 @@ import (
 	// "os/exec"
 	"gopkg.in/gomail.v2"
 	// "net/smtp"
-
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -107,6 +107,14 @@ func AlphaT_Insert(db string, coll string, ablob ReviewStruct) {
 	CheckError(err2, "AlphaT_Insert_has failed")
 }
 
+func AlphaT_Insert_Pics(db string, coll string, picinfo map[string]string) {
+	client, ctx, cancel, err := Connect("mongodb://db:27017/ampgodb")
+	CheckError(err, "AlphaT_Insert_: Connections has failed")
+	defer Close(client, ctx, cancel)
+	_, err2 := InsertOne(client, ctx, db, coll, picinfo)
+	CheckError(err2, "AlphaT_Insert_has failed")
+}
+
 func AddToQuarantineHandler(w http.ResponseWriter, r *http.Request) {
 	uuid, _ := UUID()
 	var name string = r.URL.Query().Get("name")
@@ -137,18 +145,14 @@ func AddToQuarantineHandler(w http.ResponseWriter, r *http.Request) {
 		Delete:     "no",
 	}
 	AlphaT_Insert("maindb", "main", newReview)
-
-	// tstamp := now1.Format(time.Stamp)
 	m1 := "<p>A new review was posted</p>"
 	m2 := "<a href='http://34.127.50.188/Admin'>AlphaTreeService Admin Page</>"
 	m3 := m1 + m2
-
 	m := gomail.NewMessage()
 	m.SetHeader("From", "porthose.cjsmo.cjsmo@gmail.com")
 	m.SetHeader("To", "porthose.cjsmo.cjsmo@gmail.com", "Alpha.treeservicecdm@gmail.com")
 	m.SetHeader("Subject: NEW REVIEW Has Been Posted")
 	m.SetBody("text/html", m3)
-
 	d := gomail.NewDialer("smtp.gmail.com", 587, "porthose.cjsmo.cjsmo@gmail.com", "!Porthose1960")
 	if err := d.DialAndSend(m); err != nil {
 		panic(err)
@@ -250,12 +254,10 @@ func BackupReviewHandler(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 	bString, _ := json.Marshal(allRevs)
-
 	err = ioutil.WriteFile("/root/backup/backup.json", bString, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	name_of_file := "backup.json"
 	f, _ := os.Open("/root/backup/" + name_of_file)
 	read := bufio.NewReader(f)
@@ -265,28 +267,114 @@ func BackupReviewHandler(w http.ResponseWriter, r *http.Request) {
 	ww := gzip.NewWriter(f)
 	ww.Write(data)
 	ww.Close()
-
 	t := time.Now().Format(time.RFC3339)
 	tstring := string(t)
-
 	s := "<p>THIS IS A TEST PLEASE DELETE</p><p>AlphaTreeService Reviews Backup for: " + tstring + "</p>"
 	fmt.Println("this is s")
 	fmt.Println(s)
-
 	m := gomail.NewMessage()
 	m.SetHeader("From", "porthose.cjsmo.cjsmo@gmail.com")
 	m.SetHeader("To", "porthose.cjsmo.cjsmo@gmail.com", "Alpha.treeservicecdm@gmail.com")
 	m.SetHeader("Subject: (TEST)AlphaTreeService Reviews Backup")
 	m.SetBody("text/html", s)
 	m.Attach("/root/backup/" + name_of_file)
-
 	d := gomail.NewDialer("smtp.gmail.com", 587, "porthose.cjsmo.cjsmo@gmail.com", "!Porthose1960")
 	if err := d.DialAndSend(m); err != nil {
 		panic(err)
 	}
 }
 
+// func getKitsap(w http.ResponseWriter, r *http.Request) {
+
+// }
+
+// func getMason(w http.ResponseWriter, r *http.Request) {
+
+// }
+
+func getPierceHandler(w http.ResponseWriter, r *http.Request) {
+	filter := bson.M{"county": "pierce", "pictype": "thumb"}
+	opts := options.Find()
+	opts.SetProjection(bson.M{"_id": 0})
+	client, ctx, cancel, err := Connect("mongodb://db:27017/alphatree")
+	defer Close(client, ctx, cancel)
+	CheckError(err, "getPierceMongoDB connection has failed")
+	coll := client.Database("maindb").Collection("main")
+	cur, err := coll.Find(context.TODO(), filter, opts)
+	CheckError(err, "getPierce find has failed")
+	var allPierce []map[string]string
+	if err = cur.All(context.TODO(), &allPierce); err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("%s this is getPierce-", &allPierce)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(&allPierce)
+}
+
 // INIT STUFF
+func initKitsapGallery() {
+	filepath.Walk(os.Getenv("ATSGO_KITSAP_PATH"), kitsap_visit)
+}
+func kitsap_visit(pAth string, f os.FileInfo, err error) error {
+	log.Println(pAth)
+	var pictype string
+	if strings.Contains(pAth, "orig") {
+		pictype = "orig"
+	} else {
+		pictype = "thumb"
+	}
+	psplit := strings.SplitN(pAth, "/", 3)
+	picpath := "/" + psplit[2]
+	fmt.Println(picpath)
+	uuid, _ := UUID()
+	var kv = map[string]string{"uuid": uuid, "path": picpath, "county": "kitsap", "pictype": pictype}
+	fmt.Println(kv)
+	AlphaT_Insert_Pics("picDB", "kitsap", kv)
+	return nil
+}
+
+func initMasonGallery() {
+	filepath.Walk(os.Getenv("ATSGO_MASON_PATH"), mason_visit)
+}
+func mason_visit(pAth string, f os.FileInfo, err error) error {
+	log.Println(pAth)
+	var pictype string
+	if strings.Contains(pAth, "orig") {
+		pictype = "orig"
+	} else {
+		pictype = "thumb"
+	}
+	psplit := strings.SplitN(pAth, "/", 3)
+	picpath := "/" + psplit[2]
+	fmt.Println(picpath)
+	uuid, _ := UUID()
+	var kv = map[string]string{"uuid": uuid, "path": picpath, "county": "mason", "pictype": pictype}
+	fmt.Println(kv)
+	AlphaT_Insert_Pics("picDB", "mason", kv)
+	return nil
+}
+
+func initPierceGallery() {
+	filepath.Walk(os.Getenv("ATSGO_PIERCE_PATH"), pierce_visit)
+}
+func pierce_visit(pAth string, f os.FileInfo, err error) error {
+	log.Println(pAth)
+	var pictype string
+	if strings.Contains(pAth, "orig") {
+		pictype = "orig"
+	} else {
+		pictype = "thumb"
+	}
+	psplit := strings.SplitN(pAth, "/", 3)
+	picpath := "/" + psplit[2]
+	fmt.Println(picpath)
+	uuid, _ := UUID()
+	var kv = map[string]string{"uuid": uuid, "path": picpath, "county": "pierce", "pictype": pictype}
+	fmt.Println(kv)
+	AlphaT_Insert_Pics("picDB", "pierce", kv)
+	return nil
+}
+
 type ReviewStruct struct {
 	UUID       string `yaml:"UUID"`
 	Date       string `yaml:"Date"`
@@ -351,6 +439,9 @@ func init() {
 	}
 	fmt.Println(rev4)
 	AlphaT_Insert("maindb", "main", rev4)
+	initKitsapGallery()
+	initPierceGallery()
+	initMasonGallery()
 }
 
 func main() {
@@ -363,6 +454,8 @@ func main() {
 	r.HandleFunc("/Backup", BackupReviewHandler)
 	r.HandleFunc("/DeleteReview", SetReviewToDeleteHandler)
 	r.HandleFunc("/atq", AddToQuarantineHandler)
+	r.HandleFunc("/gpierce", getPierceHandler)
+
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
 	port := ":80"
 	http.ListenAndServe(port, (r))
