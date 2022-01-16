@@ -19,31 +19,32 @@ RUN \
   mkdir ./data && \
   mkdir ./data/db && \
   mkdir ./static && \
+  mkdir ./backup && \
   mkdir ./static/images && \
+  mkdir ./static/kitsap && \
+  mkdir ./static/mason && \
+  mkdir ./static/pierce && \
   mkdir ./static/images/kitsappics && \
   mkdir ./static/images/masonpics && \
   mkdir ./static/images/piercepics && \
-  mkdir ./backup
+  mkdir ./fsData && \
+  mkdir ./fsData/thumb && \
+  mkdir ./fsData/crap && \
+  mkdir ./logs
 
 COPY backup/*.json ./backup/
 COPY backup/*.gz ./backup/
-COPY static/images/*.webp ./static/images/
-COPY static/images/kitsappics/ ./static/images/kitsappics/
-COPY static/images/masonpics/ ./static/images/masonpics/
-COPY static/images/piercepics/ ./static/images/piercepics/
+
 COPY static/*.html ./static/
 COPY static/*.css ./static/
 COPY static/*.js ./static/
 COPY static/*.yaml ./static/
-RUN chmod -R +rwx ./static
 
+COPY static/images/*.webp ./static/images/
 
 RUN \
-  mkdir ./fsData && \
-  mkdir ./fsData/thumb && \
-  mkdir ./fsData/crap && \
+  chmod -R +rwx ./static && \
   chmod -R +rwx ./fsData && \
-  mkdir ./logs && \
   chmod -R +rwx ./logs && \
   chmod -R +rwx ./backup
 

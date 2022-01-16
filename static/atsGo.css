@@ -34,13 +34,25 @@
     justify-content: space-around;
 }
 
+.card-title {
+    color: white;
+}
+
 .card {
     width: 15em;
 }
 
 h5 {
-    color: white;
-    font-size: 1.25em;
+    color: blue;
+    font-size: 2.25em;
+    text-align: center;
+}
+
+.mason-gallery {
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    text-decoration: none;
+    text-align: center;
 }
 
 .cardImg {
@@ -486,6 +498,13 @@ header {
   opacity: 0;
   padding-right:17px;
 }
+
+/* .mason-gallery {
+  color: blue;
+  text-decoration: none;
+  text-align: center;
+  font-size: 2em;
+} */
 
 @keyframes round {
   25% {

@@ -99,6 +99,24 @@ func ShowAdmin(w http.ResponseWriter, r *http.Request) {
 	showtmpl.Execute(w, showtmpl)
 }
 
+func ShowKitsap(w http.ResponseWriter, r *http.Request) {
+	tmppath := "./static/kitsap/kitsap.html"
+	tmpl := template.Must(template.ParseFiles(tmppath))
+	tmpl.Execute(w, tmpl)
+}
+
+func ShowMason(w http.ResponseWriter, r *http.Request) {
+	tmppath := "./static/mason/mason.html"
+	tmpl := template.Must(template.ParseFiles(tmppath))
+	tmpl.Execute(w, tmpl)
+}
+
+func ShowPierce(w http.ResponseWriter, r *http.Request) {
+	tmppath := "./static/pierce/pierce.html"
+	tmpl := template.Must(template.ParseFiles(tmppath))
+	tmpl.Execute(w, tmpl)
+}
+
 func AlphaT_Insert(db string, coll string, ablob ReviewStruct) {
 	client, ctx, cancel, err := Connect("mongodb://db:27017/ampgodb")
 	CheckError(err, "AlphaT_Insert_: Connections has failed")
@@ -284,13 +302,43 @@ func BackupReviewHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// func getKitsap(w http.ResponseWriter, r *http.Request) {
+func getKitsapHandler(w http.ResponseWriter, r *http.Request) {
+	filter := bson.M{"county": "kitsap", "pictype": "thumb"}
+	opts := options.Find()
+	opts.SetProjection(bson.M{"_id": 0})
+	client, ctx, cancel, err := Connect("mongodb://db:27017/alphatree")
+	defer Close(client, ctx, cancel)
+	CheckError(err, "getKitsapMongoDB connection has failed")
+	coll := client.Database("picDB").Collection("kitsap")
+	cur, err := coll.Find(context.TODO(), filter, opts)
+	CheckError(err, "getKitsap find has failed")
+	var allKitsap []map[string]string
+	if err = cur.All(context.TODO(), &allKitsap); err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("%s this is getKitsap-", &allKitsap)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(&allKitsap)
+}
 
-// }
-
-// func getMason(w http.ResponseWriter, r *http.Request) {
-
-// }
+func getMasonHandler(w http.ResponseWriter, r *http.Request) {
+	filter := bson.M{"county": "mason", "pictype": "thumb"}
+	opts := options.Find()
+	opts.SetProjection(bson.M{"_id": 0})
+	client, ctx, cancel, err := Connect("mongodb://db:27017/alphatree")
+	defer Close(client, ctx, cancel)
+	CheckError(err, "getmasonMongoDB connection has failed")
+	coll := client.Database("picDB").Collection("mason")
+	cur, err := coll.Find(context.TODO(), filter, opts)
+	CheckError(err, "getmason find has failed")
+	var allmason []map[string]string
+	if err = cur.All(context.TODO(), &allmason); err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("%s this is getallmason-", &allmason)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(&allmason)
+}
 
 func getPierceHandler(w http.ResponseWriter, r *http.Request) {
 	filter := bson.M{"county": "pierce", "pictype": "thumb"}
@@ -299,7 +347,7 @@ func getPierceHandler(w http.ResponseWriter, r *http.Request) {
 	client, ctx, cancel, err := Connect("mongodb://db:27017/alphatree")
 	defer Close(client, ctx, cancel)
 	CheckError(err, "getPierceMongoDB connection has failed")
-	coll := client.Database("maindb").Collection("main")
+	coll := client.Database("picDB").Collection("pierce")
 	cur, err := coll.Find(context.TODO(), filter, opts)
 	CheckError(err, "getPierce find has failed")
 	var allPierce []map[string]string
@@ -448,6 +496,9 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/alphatree", ShowMain)
 	r.HandleFunc("/admin", ShowAdmin)
+	r.HandleFunc("/kitsap", ShowKitsap)
+	r.HandleFunc("/mason", ShowMason)
+	r.HandleFunc("/pierce", ShowPierce)
 	r.HandleFunc("/AllQReviews", AllQuarintineReviewsHandler)
 	r.HandleFunc("/AllApprovedReviews", AllApprovedReviewsHandler)
 	r.HandleFunc("/ProcessQuarintine", ProcessQuarantineHandler)
@@ -455,7 +506,8 @@ func main() {
 	r.HandleFunc("/DeleteReview", SetReviewToDeleteHandler)
 	r.HandleFunc("/atq", AddToQuarantineHandler)
 	r.HandleFunc("/gpierce", getPierceHandler)
-
+	r.HandleFunc("/gmason", getMasonHandler)
+	r.HandleFunc("/gkitsap", getKitsapHandler)
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
 	port := ":80"
 	http.ListenAndServe(port, (r))
