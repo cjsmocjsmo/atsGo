@@ -19,7 +19,7 @@ import (
 	// "os/exec"
 	"gopkg.in/gomail.v2"
 	// "net/smtp"
-	"path/filepath"
+	// "path/filepath"
 	"strings"
 	"time"
 
@@ -360,68 +360,68 @@ func getPierceHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // INIT STUFF
-func initKitsapGallery() {
-	filepath.Walk(os.Getenv("ATSGO_KITSAP_PATH"), kitsap_visit)
-}
-func kitsap_visit(pAth string, f os.FileInfo, err error) error {
-	log.Println(pAth)
-	var pictype string
-	if strings.Contains(pAth, "orig") {
-		pictype = "orig"
-	} else {
-		pictype = "thumb"
-	}
-	psplit := strings.SplitN(pAth, "/", 3)
-	picpath := "/" + psplit[2]
-	fmt.Println(picpath)
-	uuid, _ := UUID()
-	var kv = map[string]string{"uuid": uuid, "path": picpath, "county": "kitsap", "pictype": pictype}
-	fmt.Println(kv)
-	AlphaT_Insert_Pics("picDB", "kitsap", kv)
-	return nil
-}
+// func initKitsapGallery() {
+// 	filepath.Walk(os.Getenv("ATSGO_KITSAP_PATH"), kitsap_visit)
+// }
+// func kitsap_visit(pAth string, f os.FileInfo, err error) error {
+// 	log.Println(pAth)
+// 	var pictype string
+// 	if strings.Contains(pAth, "orig") {
+// 		pictype = "orig"
+// 	} else {
+// 		pictype = "thumb"
+// 	}
+// 	psplit := strings.SplitN(pAth, "/", 3)
+// 	picpath := "/" + psplit[2]
+// 	fmt.Println(picpath)
+// 	uuid, _ := UUID()
+// 	var kv = map[string]string{"uuid": uuid, "path": picpath, "county": "kitsap", "pictype": pictype}
+// 	fmt.Println(kv)
+// 	AlphaT_Insert_Pics("picDB", "kitsap", kv)
+// 	return nil
+// }
 
-func initMasonGallery() {
-	filepath.Walk(os.Getenv("ATSGO_MASON_PATH"), mason_visit)
-}
-func mason_visit(pAth string, f os.FileInfo, err error) error {
-	log.Println(pAth)
-	var pictype string
-	if strings.Contains(pAth, "orig") {
-		pictype = "orig"
-	} else {
-		pictype = "thumb"
-	}
-	psplit := strings.SplitN(pAth, "/", 3)
-	picpath := "/" + psplit[2]
-	fmt.Println(picpath)
-	uuid, _ := UUID()
-	var kv = map[string]string{"uuid": uuid, "path": picpath, "county": "mason", "pictype": pictype}
-	fmt.Println(kv)
-	AlphaT_Insert_Pics("picDB", "mason", kv)
-	return nil
-}
+// func initMasonGallery() {
+// 	filepath.Walk(os.Getenv("ATSGO_MASON_PATH"), mason_visit)
+// }
+// func mason_visit(pAth string, f os.FileInfo, err error) error {
+// 	log.Println(pAth)
+// 	var pictype string
+// 	if strings.Contains(pAth, "orig") {
+// 		pictype = "orig"
+// 	} else {
+// 		pictype = "thumb"
+// 	}
+// 	psplit := strings.SplitN(pAth, "/", 3)
+// 	picpath := "/" + psplit[2]
+// 	fmt.Println(picpath)
+// 	uuid, _ := UUID()
+// 	var kv = map[string]string{"uuid": uuid, "path": picpath, "county": "mason", "pictype": pictype}
+// 	fmt.Println(kv)
+// 	AlphaT_Insert_Pics("picDB", "mason", kv)
+// 	return nil
+// }
 
-func initPierceGallery() {
-	filepath.Walk(os.Getenv("ATSGO_PIERCE_PATH"), pierce_visit)
-}
-func pierce_visit(pAth string, f os.FileInfo, err error) error {
-	log.Println(pAth)
-	var pictype string
-	if strings.Contains(pAth, "orig") {
-		pictype = "orig"
-	} else {
-		pictype = "thumb"
-	}
-	psplit := strings.SplitN(pAth, "/", 3)
-	picpath := "/" + psplit[2]
-	fmt.Println(picpath)
-	uuid, _ := UUID()
-	var kv = map[string]string{"uuid": uuid, "path": picpath, "county": "pierce", "pictype": pictype}
-	fmt.Println(kv)
-	AlphaT_Insert_Pics("picDB", "pierce", kv)
-	return nil
-}
+// func initPierceGallery() {
+// 	filepath.Walk(os.Getenv("ATSGO_PIERCE_PATH"), pierce_visit)
+// }
+// func pierce_visit(pAth string, f os.FileInfo, err error) error {
+// 	log.Println(pAth)
+// 	var pictype string
+// 	if strings.Contains(pAth, "orig") {
+// 		pictype = "orig"
+// 	} else {
+// 		pictype = "thumb"
+// 	}
+// 	psplit := strings.SplitN(pAth, "/", 3)
+// 	picpath := "/" + psplit[2]
+// 	fmt.Println(picpath)
+// 	uuid, _ := UUID()
+// 	var kv = map[string]string{"uuid": uuid, "path": picpath, "county": "pierce", "pictype": pictype}
+// 	fmt.Println(kv)
+// 	AlphaT_Insert_Pics("picDB", "pierce", kv)
+// 	return nil
+// }
 
 type ReviewStruct struct {
 	UUID       string `yaml:"UUID"`
@@ -487,9 +487,9 @@ func init() {
 	}
 	fmt.Println(rev4)
 	AlphaT_Insert("maindb", "main", rev4)
-	initKitsapGallery()
-	initPierceGallery()
-	initMasonGallery()
+	// initKitsapGallery()
+	// initPierceGallery()
+	// initMasonGallery()
 }
 
 func main() {

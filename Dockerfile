@@ -24,9 +24,6 @@ RUN \
   mkdir ./static/kitsap && \
   mkdir ./static/mason && \
   mkdir ./static/pierce && \
-  mkdir ./static/images/kitsappics && \
-  mkdir ./static/images/masonpics && \
-  mkdir ./static/images/piercepics && \
   mkdir ./fsData && \
   mkdir ./fsData/thumb && \
   mkdir ./fsData/crap && \

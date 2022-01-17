@@ -10,14 +10,10 @@ services:
       - 27017:27017
 
   atsGo:
-    image: atsgo:1.1.3
+    image: atsgo:1.1.5
     build: .
     environment:
       - ATSGO_DB_ADDR="mongodb://db:27017/atsgodb"
-      - ATSGO_MASON_PATH=/root/static/images/masonpics/
-      - ATSGO_PIERCE_PATH=/root/static/images/piercepics/
-      - ATSGO_KITSAP_PATH=/root/static/images/kitsappics/
-
     networks:
       - atsGo
     ports:
