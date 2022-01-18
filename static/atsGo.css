@@ -21,7 +21,8 @@
     align-items: center;
     justify-content: space-around; */
     /* margin-top: 5em; */
-    background-color: rgb(141, 5, 5);
+    /* background-color: rgb(141, 5, 5); */
+    background-color: royalblue;
     /* height: 45em; */
     border-radius: 8px;
     padding-top: 36em;
@@ -392,15 +393,44 @@ section.section2 {
 }
 
 
+p.introText {
+  position: relative;
+  left: 175px;
+  top: 665px;
+  width: 450px;
+  height: 80px;
+  font-size: 3.5em;
+  color: white;
+}
 
+.sec {
+  background-color: forestgreen;
+}
 
+.mainDiv {
+  margin-top: 57em;
 
-
-
+}
 
 @media (max-width: 769px) {
   header .container {
     max-height: 200px;
+  }
+
+  p.introText {
+    top: 465px;
+    font-size: 3.25em;
+    position: relative;
+    left: 175px;
+    width: 450px;
+    height: 80px;
+    color: white;
+  }
+
+
+  .sec {
+    margin-top: 57em;
+    background-color: forestgreen;
   }
 
   .box2 {
@@ -439,6 +469,11 @@ section.section2 {
     width: 200px;
   }
 
+  .sec {
+    background-color: forestgreen;
+    margin-top: 17em;
+  }
+
   .sectionCard {
     flex-direction: column;
     height: fit-content;
@@ -459,9 +494,22 @@ section.section2 {
   textarea {
     width: 25em;
   }
+  .mainDiv {
+    margin-top: 27em;
+  }
+
+  p.introText {
+    top: 200px;
+    font-size: 2.25em;
+    position: relative;
+    left: 75px;
+    width: 300px;
+    height: 80px;
+    color: white;
+  }
 }
 
-@media (max-width: 411px) {
+@media (max-width: 412px) {
   header .container {
     max-height: 110px;
   }
@@ -469,6 +517,21 @@ section.section2 {
   iframe {
     width: 310px;
     height: 175px;
+  }
+
+  .mainDiv {
+    margin-top: 17em;
+    background-color: forestgreen;
+  }
+
+  p.introText {
+    position: relative;
+    left: 30px;
+    top: 200px;
+    width: 250px;
+    height: 80px;
+    font-size: 2em;
+    color: white;
   }
 }
  
@@ -483,9 +546,7 @@ body.admin {
   background-color: chocolate;
 }
 
-.mainDiv {
-  display: none;
-}
+
 
 header {
   width: 100%;
@@ -626,3 +687,10 @@ img:nth-child(8) {
 		top: 0;
 		transform: translate(0, -100%);
 	}
+
+  .scene {
+    position: absolute;
+    width: 100%;
+    transform: translateY(var(--translateY));
+    will-change: transform;
+  }

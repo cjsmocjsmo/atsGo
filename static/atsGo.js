@@ -35,10 +35,10 @@ function initLoadQReviews() {
     })
 }
 
-function fadeinout() {
-    $('.aniMain').delay(2750).fadeOut(750);
-    $('.mainDiv').delay(3575).fadeIn(1000);
-}
+// function fadeinout() {
+//     $('.aniMain').delay(2750).fadeOut(750);
+//     $('.mainDiv').delay(3575).fadeIn(1000);
+// }
 
 $(document).on("click", "#revInput", function (event) {
     event.preventDefault();
@@ -112,8 +112,27 @@ $(document).on("click", "#revInput", function (event) {
 
 
 $(document).ready(function () {
-    fadeinout();
+    // fadeinout();
     initLoadReviews();
     initLoadQReviews();
     
+});
+
+document.querySelectorAll(".scene").forEach((elem) => {
+	const modifier = elem.getAttribute("data-modifier");
+
+	basicScroll
+		.create({
+			elem: elem,
+			from: 0,
+			to: 519,
+			direct: true,
+			props: {
+				"--translateY": {
+					from: "0",
+					to: `${10 * modifier}px`
+				}
+			}
+		})
+		.start();
 });
