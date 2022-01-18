@@ -36,7 +36,7 @@
 }
 
 .card-title {
-    color: white;
+    color: antiquewhite;
 }
 
 .card {
@@ -44,7 +44,7 @@
 }
 
 h5 {
-    color: white;
+    color: antiquewhite;
     font-size: 2.25em;
     text-align: center;
 }
@@ -55,7 +55,7 @@ div.gallery {
 }
 
 p.p-gallery {
-  color:white;
+  color:antiquewhite;
   text-align: center;
   font-size: 2.5em;
 }
@@ -94,7 +94,7 @@ hr {
 }
 
 .curtSig {
-  color: white;
+  color: antiquewhite;
 }
 
 /* REVIEWS STUFF */
@@ -104,7 +104,7 @@ hr {
   flex-direction: row;
   align-items: top;
   justify-content: space-evenly;
-  background-color: salmon;
+  background-color: rgb(6, 40, 134);
   height: fit-content;
   border: 4px solid yellowgreen;
   border-radius: 7px;
@@ -116,24 +116,24 @@ hr {
   font-size: large;
 }
 
-.qborder {
+/* .qborder {
   border: 4px solid black;
   padding: 10px;
   margin:auto;
-}
+} */
 
 .rev-csig {
-  color: black;
+  color: antiquewhite;
   float: right;
 }
 
 .rev-cbod {
-  color: black;
+  color: antiquewhite;
   width: 15em;
 }
 
 h3 {
-  color: whitesmoke;
+  color: antiquewhite;
 }
 
 form {
@@ -156,7 +156,7 @@ form {
 input, .foo {
   width: 50%;
   height: 2.25em;
-  background-color: rgb(135, 205, 222);
+  background-color: dodgerblue;
   color: black;
   border-radius: 7px;
   margin: 7px;
@@ -236,7 +236,7 @@ textarea {
     position: absolute;
     height: 8px;
     width: 8px;
-    background-color: white;
+    background-color: antiquewhite;
     border-radius: 50%;
     top: 50%;
     transform: translateX(0%) translateY(-50%) rotate(0deg);
@@ -313,7 +313,7 @@ textarea {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: White;
+    color: antiquewhite;
     box-shadow: 0 0.1rem 1rem rgba(24, 66, 154, 0.82);
     transition: all 1s ease;
   
@@ -389,7 +389,7 @@ section.section2 {
 
 
 .loginInput {
-  color: white;
+  color: antiquewhite;
 }
 
 
@@ -400,11 +400,13 @@ p.introText {
   width: 450px;
   height: 80px;
   font-size: 3.5em;
-  color: white;
+  color: antiquewhite;
 }
 
 .sec {
-  background-color: forestgreen;
+  background-color: rgb(6, 40, 134);
+  border: 4px solid yellowgreen;
+  border-radius: 10px;
 }
 
 .mainDiv {
@@ -430,7 +432,9 @@ p.introText {
 
   .sec {
     margin-top: 57em;
-    background-color: forestgreen;
+    background-color: rgb(6, 40, 134);
+    border: 4px solid yellowgreen;
+    border-radius: 10px;
   }
 
   .box2 {
@@ -470,8 +474,10 @@ p.introText {
   }
 
   .sec {
-    background-color: forestgreen;
+    background-color: rgb(6, 40, 134);
     margin-top: 17em;
+    border: 4px solid yellowgreen;
+    border-radius: 10px;
   }
 
   .sectionCard {
@@ -505,7 +511,7 @@ p.introText {
     left: 75px;
     width: 300px;
     height: 80px;
-    color: white;
+    color: antiquewhite;
   }
 }
 
@@ -521,7 +527,7 @@ p.introText {
 
   .mainDiv {
     margin-top: 17em;
-    background-color: forestgreen;
+    background-color: rgb(6, 40, 134);
   }
 
   p.introText {
