@@ -80,7 +80,6 @@ $(document).on("click", "#revInput", function (event) {
         $('.reviewadmin').empty().append(procMess);
     })
 })
-
 .on("click", "#backup", function () {
     $.get('/Backup',
     {},
@@ -88,21 +87,6 @@ $(document).on("click", "#revInput", function (event) {
         console.log("set Backup sucess");
     })
 })
-
-
-// .on("click", ".pierce-gallery", function () {
-//     $.get('/gpierce',
-//     {},
-//     function (data) {
-//         $.each(data, function (key, val) {
-//             console.log(val.path);
-//         })
-//     })
-// })
-
-
-
-
 .on("click", "#name", function () {
     $("#name").val("")
 })
@@ -115,7 +99,6 @@ $(document).ready(function () {
     // fadeinout();
     initLoadReviews();
     initLoadQReviews();
-    
 });
 
 document.querySelectorAll(".scene").forEach((elem) => {
