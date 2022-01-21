@@ -22,7 +22,7 @@ services:
       - db
 
   scrapers:
-    image: scrap:0.0.1
+    image: scrap:0.0.2
     build: ./scrapers
     networks:
       - atsGo
