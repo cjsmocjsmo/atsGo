@@ -1,0 +1,7 @@
+
+
+0 * * * * /usr/bin/python3 /home/EZtv.py
+*/15 * * * * /usr/bin/python3 /home/TGtv.py
+0 * * * * /usr/bin/python3 /home/rss.py
+
+

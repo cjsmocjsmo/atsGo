@@ -21,9 +21,6 @@ RUN \
   mkdir ./static && \
   mkdir ./backup && \
   mkdir ./static/images && \
-  mkdir ./static/kitsap && \
-  mkdir ./static/mason && \
-  mkdir ./static/pierce && \
   mkdir ./fsData && \
   mkdir ./fsData/thumb && \
   mkdir ./fsData/crap && \
