@@ -20,14 +20,6 @@ services:
       - 80:80
     depends_on:
       - db
-
-  scrapers:
-    image: scrap:0.0.2
-    build: ./scrapers
-    networks:
-      - atsGo
-    ports:
-      - 587:587
-
+      
 networks:
   atsGo:
