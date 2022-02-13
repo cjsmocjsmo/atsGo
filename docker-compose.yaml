@@ -10,7 +10,7 @@ services:
       - 27017:27017
 
   atsGo:
-    image: atsgo:1.2.0
+    image: atsgo:1.3.0
     build: .
     environment:
       - ATSGO_DB_ADDR="mongodb://db:27017/atsgodb"
