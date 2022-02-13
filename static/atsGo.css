@@ -1073,7 +1073,70 @@ iframe#secVid {
     font-size: 3.5em;
     font-weight: 900;
     color: antiquewhite;
+  }
 }
+
+@media (max-width: 331px) {
+
+  .curt2 {
+    font-style: italic;
+    font-size: 1em;
+    font-weight: 700;
+    color: antiquewhite;
+    text-align: center;
+    position: relative;
+    top: 7.5vh;
+  }
+
+  .curtSig2 {
+    position: relative;
+    color: white;
+    top: 7.5vh;
+    font-size: 1em;
+  }
+
+  .teleNum {
+    margin-top: 0.5em;
+    text-align: center;
+    font-size: 2.5em;
+    font-weight: 900;
+    color: antiquewhite;
+  }
+
+  .atsServ {
+    text-align: center;
+    font-size: 1.75em;
+    color: antiquewhite;
+  }
+
+  h3 {
+    color: antiquewhite;
+    font-size: 2.5em;
+  }
+
+  input, .foo {
+    width: 100%;
+    height: 1.5em;
+    background-color: dodgerblue;
+    color: black;
+    border-radius: 7px;
+    margin: 7px;
+    font-size: 1.75em;
+  }
+
+  textarea {
+    width: 100%;
+  }
+
+  .footerNum {
+    text-align: center;
+    font-size: 2.75em;
+    color: antiquewhite;
+  }
+
+  p.footerp {
+    font-size: 1.1em;
+  }
 
 }
  
