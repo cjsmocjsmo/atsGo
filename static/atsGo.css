@@ -430,20 +430,103 @@ iframe#secVid {
 }
 
 
-@media (max-width: 1800px) {
+@media (max-width: 1840px) {
+  p.introText {
+    position: relative;
+    top: 50vh;
+    font-size: 6.75em;
+    color: antiquewhite;
+    text-align: center;
+  }
+
+  .curt2 {
+    position: relative;
+    color: antiquewhite;
+    font-size: 2.25em;
+    top: 45vh;
+    margin-right: 4em;
+    margin-left: 4em;
+    text-align: center;
+  }
+
+  .curtSig2 {
+    position: relative;
+    color: antiquewhite;
+    font-size: 1.5em;
+    top: 47vh;
+    text-align: center;
+  }
+
   iframe#mainVid {
     display: block;
     position: relative;
     top: 50vh;
-    width: 1400px;
-    height: 800px;
+    width: 787.5px;
+    height: 450px;
     margin-left: auto;
     margin-right: auto;
   }
 
+  .teleNum {
+    margin-top: 0.5em;
+    text-align: center;
+    font-size: 4.5em;
+    font-weight: 900;
+    color: antiquewhite;
+}
+
   iframe#secVid {
-    width: 1400px;
-    height: 800px;
+    width: 787.5px;
+    height: 450px;
+  }
+
+  .atsServ {
+    text-align: center;
+    font-size: 2.75em;
+    color: antiquewhite;
+  }
+
+  .card {
+    width: 17em;
+  }
+
+  h5 {
+    color: antiquewhite;
+    font-size: 3.5em;
+    text-align: center;
+  }
+
+  .rev-cbod {
+    color: antiquewhite;
+    width: 15em;
+    font-size: 1.75em;
+  }
+
+  .rev-csig {
+    color: antiquewhite;
+    float: right;
+    font-size: 1.5em;
+  }
+
+  h3 {
+    color: antiquewhite;
+    font-size: 4em;
+  }
+
+  input, .foo {
+    width: 50%;
+    height: 2.25em;
+    background-color: dodgerblue;
+    color: black;
+    border-radius: 7px;
+    margin: 7px;
+    font-size: 2em;
+  }
+
+  .footerNum {
+    text-align: center;
+    font-size: 3.5em;
+    color: antiquewhite;
   }
 
   p.footerp {
@@ -454,7 +537,7 @@ iframe#secVid {
 
 }
 
-@media (max-width: 1500px) {
+@media (max-width: 1510px) {
 
   p.introText {
     position: relative;
@@ -631,7 +714,7 @@ iframe#secVid {
     top: 35vh;
     text-align: center;
     font-size: 1.25em;
-}
+  }
 
   iframe#mainVid {
     position: relative;
