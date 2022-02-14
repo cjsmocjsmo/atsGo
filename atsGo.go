@@ -103,13 +103,13 @@ func AlphaT_Insert(db string, coll string, ablob ReviewStruct) {
 	CheckError(err2, "AlphaT_Insert_has failed")
 }
 
-func AlphaT_Insert_Pics(db string, coll string, picinfo map[string]string) {
-	client, ctx, cancel, err := Connect("mongodb://db:27017/ampgodb")
-	CheckError(err, "AlphaT_Insert_: Connections has failed")
-	defer Close(client, ctx, cancel)
-	_, err2 := InsertOne(client, ctx, db, coll, picinfo)
-	CheckError(err2, "AlphaT_Insert_has failed")
-}
+// func AlphaT_Insert_Pics(db string, coll string, picinfo map[string]string) {
+// 	client, ctx, cancel, err := Connect("mongodb://db:27017/ampgodb")
+// 	CheckError(err, "AlphaT_Insert_: Connections has failed")
+// 	defer Close(client, ctx, cancel)
+// 	_, err2 := InsertOne(client, ctx, db, coll, picinfo)
+// 	CheckError(err2, "AlphaT_Insert_has failed")
+// }
 
 func AddToQuarantineHandler(w http.ResponseWriter, r *http.Request) {
 	uuid, _ := UUID()
@@ -265,13 +265,13 @@ func BackupReviewHandler(w http.ResponseWriter, r *http.Request) {
 	ww.Close()
 	t := time.Now().Format(time.RFC3339)
 	tstring := string(t)
-	s := "<p>THIS IS A TEST PLEASE DELETE</p><p>AlphaTreeService Reviews Backup for: " + tstring + "</p>"
+	s := "<p>AlphaTreeService Reviews Backup for: " + tstring + "</p>"
 	fmt.Println("this is s")
 	fmt.Println(s)
 	m := gomail.NewMessage()
 	m.SetHeader("From", "porthose.cjsmo.cjsmo@gmail.com")
 	m.SetHeader("To", "porthose.cjsmo.cjsmo@gmail.com", "Alpha.treeservicecdm@gmail.com")
-	m.SetHeader("Subject: (TEST)AlphaTreeService Reviews Backup")
+	m.SetHeader("Subject: AlphaTreeService Reviews Backup")
 	m.SetBody("text/html", s)
 	m.Attach("/root/backup/" + name_of_file)
 	d := gomail.NewDialer("smtp.gmail.com", 587, "porthose.cjsmo.cjsmo@gmail.com", "!Porthose1960")
