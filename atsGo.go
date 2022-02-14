@@ -344,27 +344,18 @@ func init() {
 	}
 	fmt.Println(rev4)
 	AlphaT_Insert("maindb", "main", rev4)
-	// initKitsapGallery()
-	// initPierceGallery()
-	// initMasonGallery()
 }
 
 func main() {
 	r := mux.NewRouter()
-	r.HandleFunc("/alphatree", ShowMain)
+	r.HandleFunc("/", ShowMain)
 	r.HandleFunc("/admin", ShowAdmin)
-	// r.HandleFunc("/kitsap", ShowKitsap)
-	// r.HandleFunc("/mason", ShowMason)
-	// r.HandleFunc("/pierce", ShowPierce)
 	r.HandleFunc("/AllQReviews", AllQuarintineReviewsHandler)
 	r.HandleFunc("/AllApprovedReviews", AllApprovedReviewsHandler)
 	r.HandleFunc("/ProcessQuarintine", ProcessQuarantineHandler)
 	r.HandleFunc("/Backup", BackupReviewHandler)
 	r.HandleFunc("/DeleteReview", SetReviewToDeleteHandler)
 	r.HandleFunc("/atq", AddToQuarantineHandler)
-	// r.HandleFunc("/gpierce", getPierceHandler)
-	// r.HandleFunc("/gmason", getMasonHandler)
-	// r.HandleFunc("/gkitsap", getKitsapHandler)
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static/"))))
 	port := ":80"
 	http.ListenAndServe(port, (r))
