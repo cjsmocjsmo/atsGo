@@ -402,6 +402,10 @@ p.introText {
   text-align: center;
 }
 
+.curt2:first-letter {
+  font-size: 4.5em;
+}
+
 .curtSig2 {
   position: relative;
   color: antiquewhite;
@@ -447,6 +451,10 @@ iframe#secVid {
     margin-right: 4em;
     margin-left: 4em;
     text-align: center;
+  }
+
+  .curt2:first-letter {
+    font-size: 2.75em;
   }
 
   .curtSig2 {
@@ -555,6 +563,10 @@ iframe#secVid {
     margin-right: 4em;
     margin-left: 4em;
     text-align: center;
+  }
+
+  .curt2:first-letter {
+    font-size: 3.25em;
   }
 
   .curtSig2 {
@@ -670,6 +682,10 @@ iframe#secVid {
     text-align: center;
   }
 
+  .curt2:first-letter {
+    font-size: 1.8em;
+  }
+
   .curtSig2 {
     position: relative;
     color: antiquewhite;
@@ -706,6 +722,10 @@ iframe#secVid {
     font-size: 1.25em;
     margin-right: 3em;
     margin-left: 3em;
+  }
+
+  .curt2:first-letter {
+    font-size: 1.75em;
   }
 
   .curtSig2 {
@@ -752,6 +772,10 @@ iframe#secVid {
     font-size: 1.5em;
     margin-right: 3em;
     margin-left: 3em;
+  }
+
+  .curt2:first-letter {
+    font-size: 2em;
   }
 
   .curtSig2{
@@ -811,6 +835,10 @@ iframe#secVid {
     margin-right: 3em;
     margin-left: 3em;
     text-align: center;
+  }
+
+  .curt2:first-letter {
+    font-size: 2em;
   }
   
   .curtSig2{
@@ -884,6 +912,10 @@ iframe#secVid {
     margin-left: 3em;
   }
 
+  .curt2:first-letter {
+    font-size: 2em;
+  }
+
   .curtSig2{
     position: relative;
     color: antiquewhite;
@@ -940,7 +972,11 @@ iframe#secVid {
     text-align: center;
     position: relative;
     top: 19vh;
-}
+  }
+
+  .curt2:first-letter {
+    font-size: 1.9em;
+  }
 
   .curtSig2 {
     position: relative;
@@ -1055,6 +1091,10 @@ iframe#secVid {
     position: relative;
     top: 6vh;
   }
+
+  .curt2:first-letter {
+    font-size: 1.9em;
+  }
   .curtSig2 {
     position: relative;
     color: white;
@@ -1086,6 +1126,10 @@ iframe#secVid {
     text-align: center;
     position: relative;
     top: 7.5vh;
+  }
+
+  .curt2:first-letter {
+    font-size: 1.5em;
   }
 
   .curtSig2 {
