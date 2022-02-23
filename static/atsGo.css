@@ -753,6 +753,13 @@ iframe#secVid {
   .mainDiv {
     margin-top: 80vh;
   }
+
+  p.footerp {
+    font-weight: 700;
+    font-size: 1.2em;
+    color: antiquewhite;
+  }
+
 }
 
 
@@ -1187,7 +1194,47 @@ iframe#secVid {
 
 
 
-
+/* .example1 {
+ height: 50px;	
+ overflow: hidden;
+ position: relative;
+}
+.example1 h3 {
+ font-size: 3em;
+ color: limegreen;
+ position: absolute;
+ width: 100%;
+ height: 100%;
+ margin: 0;
+ line-height: 50px;
+ text-align: center;
+ -moz-transform:translateX(100%);
+ -webkit-transform:translateX(100%);	
+ transform:translateX(100%);
+ -moz-animation: example1 15s linear infinite;
+ -webkit-animation: example1 15s linear infinite;
+ animation: example1 15s linear infinite;
+}
+@-moz-keyframes example1 {
+ 0%   { -moz-transform: translateX(100%); }
+ 100% { -moz-transform: translateX(-100%); }
+}
+@-webkit-keyframes example1 {
+ 0%   { -webkit-transform: translateX(100%); }
+ 100% { -webkit-transform: translateX(-100%); }
+}
+@keyframes example1 {
+ 0%   { 
+ -moz-transform: translateX(100%);
+ -webkit-transform: translateX(100%);
+ transform: translateX(100%); 		
+ }
+ 100% { 
+ -moz-transform: translateX(-100%); 
+ -webkit-transform: translateX(-100%); 
+ transform: translateX(-100%); 
+ }
+} */
 
 
 
