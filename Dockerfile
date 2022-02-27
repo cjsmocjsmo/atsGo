@@ -21,6 +21,9 @@ RUN \
   mkdir ./static && \
   mkdir ./backup && \
   mkdir ./static/images && \
+  mkdir ./static/gallery && \
+  mkdir ./static/gallery/landscape && \
+  mkdir ./static/gallery/portrait && \
   mkdir ./fsData && \
   mkdir ./fsData/thumb && \
   mkdir ./fsData/crap && \
@@ -36,6 +39,10 @@ COPY static/*.yaml ./static/
 COPY static/images/*.png ./static/images/
 COPY static/images/*.jpg ./static/images/
 COPY static/images/*.webp ./static/images/
+
+COPY static/gallery/landscape/*.webp ./static/gallery/landscape/
+COPY static/gallery/portrait/*.webp ./static/gallery/portrait/
+
 
 RUN \
   chmod -R +rwx ./static && \

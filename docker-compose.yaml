@@ -10,10 +10,12 @@ services:
       - 27017:27017
 
   atsGo:
-    image: atsgo:1.2.1
+    image: atsgo:1.2.4
     build: .
     environment:
       - ATSGO_DB_ADDR="mongodb://db:27017/atsgodb"
+      - ATSGO_SERVER_ADDR=http://localhost
+      # - ATSGO_SERVER_ADDR=http://192.168.0.90
     networks:
       - atsGo
     ports:
