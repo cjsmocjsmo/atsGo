@@ -1,0 +1,33 @@
+.gallery-main {
+    background-color:black;
+}
+
+.gallery-link {
+    margin-top:1em;
+}
+
+.gallery-link-div {
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+    align-items:center;
+}
+
+.gallery-link-div-btn {
+    padding:2px;
+    margin:2px
+}
+
+.gallery-pic-div-placeholder {
+    display:flex;
+    flex-direction:row;
+    flex-wrap:wrap;
+    justify-content:center;
+    align-items:center;
+}
+
+.gallery-pic {
+    width:200px;
+    padding:8px;
+    border-radius:15px;
+}

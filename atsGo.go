@@ -313,7 +313,7 @@ func ShowGalleryPage1Handler(w http.ResponseWriter, r *http.Request) {
 	if err = cur.All(context.TODO(), &allPage1); err != nil {
 		log.Fatal(err)
 	}
-	tmpl2 := template.Must(template.ParseFiles("./static/galleryPage1.html"))
+	tmpl2 := template.Must(template.ParseFiles("./static/gallery.html"))
 	tmpl2.Execute(w, allPage1)
 }
 
@@ -331,7 +331,7 @@ func ShowGalleryPage2Handler(w http.ResponseWriter, r *http.Request) {
 	if err = cur.All(context.TODO(), &allPage2); err != nil {
 		log.Fatal(err)
 	}
-	tmpl2 := template.Must(template.ParseFiles("./static/galleryPage1.html"))
+	tmpl2 := template.Must(template.ParseFiles("./static/gallery.html"))
 	tmpl2.Execute(w, allPage2)
 }
 
