@@ -14,42 +14,29 @@
             </svg>
         </a>
         <div style="margin-top:1em;">
-            <div style="display:flex;
-                        flex-direction: row;
-                        justify-content: center;
-                        align-items: center;"
-            >
-                <a href="/galleryp1"><button style="padding:1px;margin:1px">1</button></a>
-                <a href="/galleryp2"><button style="padding:1px;margin:1px">2</button></a>
+            <div style="display:flex;flex-direction:row;justify-content:center;align-items:center;">
+                <a href="/galleryp1"><button style="padding:2px;margin:2px">1</button></a>
+                <a href="/galleryp2"><button style="padding:2px;margin:2px">2</button></a>
             </div>
         </div>
         <div class="picdiv" >
             <div class="picdiv2"
-                style="display:flex;
-                        flex-direction: row;
-                        flex-wrap: wrap;
-                        justify-content: center;
-                        align-items: center;" 
-            >
-                {{range .}}
-                    {{if .Orient == "landscape"}}
-                        <a href="/zoompic2?picid={{.PicID}}">
-                            <img src={{.Thumb}} style="width:200px;padding:8px;border-radius:8px;"></img>
-                        </a>
-                    {{else}}
-                        <a href="/zoompic1?picid={{.PicID}}">
-                            <img src={{.Thumb}} style="width:200px;padding:8px;border-radius:8px;"></img>
-                        </a>
-                    {{end}}
-                {{end}}
+                 style="display:flex;flex-direction:row;flex-wrap:wrap;justify-content:center;align-items:center;">
+                 {{range .}}
+                     {{if .Orient}}
+                         <a href="/zoompic1?picid={{.PicID}}">
+                             <img src={{.Thumb}} style="width:200px;padding:8px;border-radius:15px;"></img>
+                         </a>
+                     {{else}}
+                         <a href="/zoompic2?picid={{.PicID}}">
+                             <img src={{.Thumb}} style="width:200px;padding:8px;border-radius:15px;"></img>
+                         </a>
+                     {{end}}
+                 {{end}}
             </div>
         </div>
         <div style="margin-top:1em;">
-            <div style="display:flex;
-                        flex-direction: row;
-                        justify-content: center;
-                        align-items: center;"
-            >
+            <div style="display:flex;flex-direction:row;justify-content:center;align-items:center;">
                 <a href="/galleryp1"><button style="padding:1px;margin:1px">1</button></a>
                 <a href="/galleryp2"><button style="padding:1px;margin:1px">2</button></a>
             </div>

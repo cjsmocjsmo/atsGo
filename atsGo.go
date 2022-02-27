@@ -16,7 +16,6 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
-
 	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -27,6 +26,8 @@ import (
 )
 
 ///////////////////////////////////////////////////////////////////////////////
+
+var CONN string = os.Getenv("ATSGO_DB_ADDR")
 
 func UUID() (string, error) {
 	uuid := make([]byte, 16)
@@ -75,16 +76,16 @@ func Query(client *mongo.Client, ctx context.Context, dataBase, col string, quer
 	return
 }
 
-func AtsGoFindOne(db string, coll string, filtertype string, filterstring string) map[string]string {
+func AtsGoFindOnePic(db string, coll string, filtertype string, filterstring string) PicStruct {
 	filter := bson.M{filtertype: filterstring}
-	client, ctx, cancel, err := Connect("mongodb://db:27017/ampgodb")
+	client, ctx, cancel, err := Connect(CONN)
 	defer Close(client, ctx, cancel)
-	CheckError(err, "AtsGoFindOne: MongoDB connection has failed")
+	CheckError(err, "AtsGoFindOnePic: MongoDB connection has failed")
 	collection := client.Database(db).Collection(coll)
-	var results map[string]string = make(map[string]string)
+	var results PicStruct
 	err = collection.FindOne(context.Background(), filter).Decode(&results)
 	if err != nil {
-		log.Println("AtsGoFindOne: find one has fucked up")
+		log.Println("AtsGoFindOnePic: find one has fucked up")
 		log.Fatal(err)
 	}
 	return results
@@ -114,7 +115,7 @@ func ShowAdmin(w http.ResponseWriter, r *http.Request) {
 }
 
 func AlphaT_Insert(db string, coll string, ablob ReviewStruct) {
-	client, ctx, cancel, err := Connect("mongodb://db:27017/ampgodb")
+	client, ctx, cancel, err := Connect(CONN)
 	CheckError(err, "AlphaT_Insert_: Connections has failed")
 	defer Close(client, ctx, cancel)
 	_, err2 := InsertOne(client, ctx, db, coll, ablob)
@@ -122,7 +123,7 @@ func AlphaT_Insert(db string, coll string, ablob ReviewStruct) {
 }
 
 func AlphaT_Insert_Pics(db string, coll string, picinfo PicStruct) {
-	client, ctx, cancel, err := Connect("mongodb://db:27017/ampgodb")
+	client, ctx, cancel, err := Connect(CONN)
 	CheckError(err, "AlphaT_Insert_: Connections has failed")
 	defer Close(client, ctx, cancel)
 	_, err2 := InsertOne(client, ctx, db, coll, picinfo)
@@ -177,7 +178,7 @@ func AllQuarintineReviewsHandler(w http.ResponseWriter, r *http.Request) {
 	filter := bson.M{"approved": "no", "quarintine": "yes", "delete": "no"}
 	opts := options.Find()
 	opts.SetProjection(bson.M{"_id": 0})
-	client, ctx, cancel, err := Connect("mongodb://db:27017/alphatree")
+	client, ctx, cancel, err := Connect(CONN)
 	defer Close(client, ctx, cancel)
 	CheckError(err, "MongoDB connection has failed")
 	coll := client.Database("maindb").Collection("main")
@@ -197,7 +198,7 @@ func AllApprovedReviewsHandler(w http.ResponseWriter, r *http.Request) {
 	filter := bson.M{"approved": "yes", "quarintine": "no", "delete": "no"}
 	opts := options.Find()
 	opts.SetProjection(bson.M{"_id": 0})
-	client, ctx, cancel, err := Connect("mongodb://db:27017/alphatree")
+	client, ctx, cancel, err := Connect(CONN)
 	defer Close(client, ctx, cancel)
 	CheckError(err, "MongoDB connection has failed")
 	coll := client.Database("maindb").Collection("main")
@@ -217,7 +218,7 @@ func SetReviewToDeleteHandler(w http.ResponseWriter, r *http.Request) {
 	var delUUID string = r.URL.Query().Get("uuid")
 	filter := bson.M{"uuid": delUUID}
 	update := bson.M{"$set": bson.M{"delete": "yes"}}
-	client, ctx, cancel, err := Connect("mongodb://db:27017/alphatree")
+	client, ctx, cancel, err := Connect(CONN)
 	defer Close(client, ctx, cancel)
 	CheckError(err, "MongoDB connection has failed")
 	UpdateOne(client, ctx, filter, "maindb", "main", update)
@@ -227,7 +228,7 @@ func ProcessQuarantineHandler(w http.ResponseWriter, r *http.Request) {
 	filter := bson.M{}
 	opts := options.Find()
 	opts.SetProjection(bson.M{"_id": 0})
-	client, ctx, cancel, err := Connect("mongodb://db:27017/alphatree")
+	client, ctx, cancel, err := Connect(CONN)
 	defer Close(client, ctx, cancel)
 	CheckError(err, "MongoDB connection has failed")
 	coll := client.Database("maindb").Collection("main")
@@ -242,7 +243,7 @@ func ProcessQuarantineHandler(w http.ResponseWriter, r *http.Request) {
 	for _, rev := range allRevs {
 		filter := bson.M{"uuid": rev.UUID}
 		update := bson.M{"$set": bson.M{"approved": "yes", "quarintine": "no"}}
-		client, ctx, cancel, err := Connect("mongodb://db:27017/alphatree")
+		client, ctx, cancel, err := Connect(CONN)
 		defer Close(client, ctx, cancel)
 		CheckError(err, "MongoDB connection has failed")
 		UpdateOne(client, ctx, filter, "maindb", "main", update)
@@ -257,7 +258,7 @@ func BackupReviewHandler(w http.ResponseWriter, r *http.Request) {
 	filter := bson.M{}
 	opts := options.Find()
 	opts.SetProjection(bson.M{"_id": 0})
-	client, ctx, cancel, err := Connect("mongodb://db:27017/alphatree")
+	client, ctx, cancel, err := Connect(CONN)
 	defer Close(client, ctx, cancel)
 	CheckError(err, "MongoDB connection has failed")
 	coll := client.Database("maindb").Collection("main")
@@ -302,7 +303,7 @@ func ShowGalleryPage1Handler(w http.ResponseWriter, r *http.Request) {
 	filter := bson.M{"page": "1"}
 	opts := options.Find()
 	opts.SetProjection(bson.M{"_id": 0})
-	client, ctx, cancel, err := Connect("mongodb://db:27017/alphatree")
+	client, ctx, cancel, err := Connect(CONN)
 	defer Close(client, ctx, cancel)
 	CheckError(err, "MongoDB connection has failed")
 	coll := client.Database("picdb").Collection("portrait")
@@ -312,18 +313,15 @@ func ShowGalleryPage1Handler(w http.ResponseWriter, r *http.Request) {
 	if err = cur.All(context.TODO(), &allPage1); err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("%s this is AllQuarintineReviews-", allPage1)
 	tmpl2 := template.Must(template.ParseFiles("./static/galleryPage1.html"))
 	tmpl2.Execute(w, allPage1)
-	// pictmpl := template.Must(template.ParseFiles(showpicpath))
-	// pictmpl.Execute(w, pictmpl)
 }
 
 func ShowGalleryPage2Handler(w http.ResponseWriter, r *http.Request) {
 	filter := bson.M{"page": "2"}
 	opts := options.Find()
 	opts.SetProjection(bson.M{"_id": 0})
-	client, ctx, cancel, err := Connect("mongodb://db:27017/alphatree")
+	client, ctx, cancel, err := Connect(CONN)
 	defer Close(client, ctx, cancel)
 	CheckError(err, "MongoDB connection has failed")
 	coll := client.Database("picdb").Collection("landscape")
@@ -333,7 +331,6 @@ func ShowGalleryPage2Handler(w http.ResponseWriter, r *http.Request) {
 	if err = cur.All(context.TODO(), &allPage2); err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("%s this is AllQuarintineReviews-", allPage2)
 	tmpl2 := template.Must(template.ParseFiles("./static/galleryPage1.html"))
 	tmpl2.Execute(w, allPage2)
 }
@@ -341,8 +338,9 @@ func ShowGalleryPage2Handler(w http.ResponseWriter, r *http.Request) {
 func ZoomPic1Handler(w http.ResponseWriter, r *http.Request) {
 	// portrait
 	picid := r.URL.Query().Get("picid")
-	pic := AtsGoFindOne("picdb", "portrait", "picID", picid)
-	log.Printf("%s this is ZoomPic1Handler-", pic)
+	fmt.Println(picid)
+	pic := AtsGoFindOnePic("picdb", "portrait", "PicID", picid)
+	fmt.Println(pic)
 	tmpl2 := template.Must(template.ParseFiles("./static/zoom.html"))
 	tmpl2.Execute(w, pic)
 }
@@ -350,8 +348,9 @@ func ZoomPic1Handler(w http.ResponseWriter, r *http.Request) {
 func ZoomPic2Handler(w http.ResponseWriter, r *http.Request) {
 	// landscape
 	picid2 := r.URL.Query().Get("picid")
-	pic2 := AtsGoFindOne("picdb", "landscape", "picID", picid2)
-	log.Printf("%s this is ZoomPic1Handler-", pic2)
+	fmt.Println(picid2)
+	pic2 := AtsGoFindOnePic("picdb", "landscape", "PicID", picid2)
+	fmt.Println(pic2)
 	tmpl2 := template.Must(template.ParseFiles("./static/zoom.html"))
 	tmpl2.Execute(w, pic2)
 }
@@ -377,7 +376,7 @@ type PicStruct struct {
 	Pic    string `bson:"pic"`
 	Thumb  string `bson:"thumb"`
 	Page   string `bson:"page"`
-	Orient string `bson:"orient"`
+	Orient bool   `bson:"orient"`
 }
 
 func init() {
@@ -438,9 +437,9 @@ func init() {
 		} else {
 			var newpic PicStruct
 			if strings.Contains(g, "landscape") {
-				newpic.Orient = "landscape"
+				newpic.Orient = false // "landscape"
 			} else {
-				newpic.Orient = "portrait"
+				newpic.Orient = true //"portrait"
 			}
 			newpic.PicID, _ = UUID()
 			newpic.Pic = os.Getenv("ATSGO_SERVER_ADDR") + "/" + g
@@ -467,12 +466,11 @@ func init() {
 		} else {
 			var newpic PicStruct
 			if strings.Contains(gg, "landscape") {
-				newpic.Orient = "landscape"
+				newpic.Orient = false //"landscape"
 			} else {
-				newpic.Orient = "portrait"
+				newpic.Orient = true //"portrait"
 			}
 			newpic.PicID, _ = UUID()
-			// newpic.Pic = os.Getenv("ATSGO_SERVER_ADDR") + "/" + gg
 			newpic.Pic = "./" + gg
 			fmt.Println(newpic.Pic)
 			ext := filepath.Ext(gg)
@@ -494,12 +492,10 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", ShowMain)
 	r.HandleFunc("/admin", ShowAdmin)
-
 	r.HandleFunc("/galleryp1", ShowGalleryPage1Handler)
 	r.HandleFunc("/galleryp2", ShowGalleryPage2Handler)
 	r.HandleFunc("/zoompic1", ZoomPic1Handler)
 	r.HandleFunc("/zoompic2", ZoomPic2Handler)
-
 	r.HandleFunc("/AllQReviews", AllQuarintineReviewsHandler)
 	r.HandleFunc("/AllApprovedReviews", AllApprovedReviewsHandler)
 	r.HandleFunc("/ProcessQuarintine", ProcessQuarantineHandler)
