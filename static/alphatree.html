@@ -6,15 +6,6 @@
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
 			crossorigin="anonymous"></script>
 		<script src="/static/atsGo.js"></script>
-		<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-SZ0BJQC859"></script>
-		<script>
-			window.dataLayer = window.dataLayer || [];
-			function gtag(){dataLayer.push(arguments);}
-			gtag('js', new Date());
-
-			gtag('config', 'G-SZ0BJQC859');
-		</script> -->
-
 		<link rel="stylesheet" href="/static/atsGo.css">
 		<link rel="shortcut icon" type="image/jpg" href="/static/images/logo32.jpg"/>
 		<title>Alpha Tree Service</title>
@@ -153,7 +144,15 @@
 
 			<hr>
 
-			<div class="review1"></div>
+			<div class="review1">
+				<div class='rev-card'>
+					<div class='rev-card-body'>";
+						<h5 class='rev-card-title'>Review</h5>
+						<p class='rev-cbod'>{{.Message}}</p>
+						<p class='rev-csig'>{{.Sig}}</p>
+					</div>
+				</div>
+			</div>
 
 			<hr>
 

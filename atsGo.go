@@ -8,21 +8,21 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"html/template"
-	"io/ioutil"
-	"log"
-	"net/http"
-	"os"
-	"path/filepath"
-	"strings"
-	"time"
 	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"gopkg.in/gomail.v2"
 	"gopkg.in/yaml.v2"
+	"html/template"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"os"
+	"path/filepath"
 	"strconv"
+	"strings"
+	"time"
 )
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -190,8 +190,10 @@ func AllQuarintineReviewsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Printf("%s this is AllQuarintineReviews-", allQRevs)
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(&allQRevs)
-	log.Println("AllQuarintineReviews Info Complete")
+	// json.NewEncoder(w).Encode(&allQRevs)
+	// log.Println("AllQuarintineReviews Info Complete")
+	tmpl2 := template.Must(template.ParseFiles("./static/admin.html"))
+	tmpl2.Execute(w, allQRevs)
 }
 
 func AllApprovedReviewsHandler(w http.ResponseWriter, r *http.Request) {
@@ -210,8 +212,10 @@ func AllApprovedReviewsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Printf("%s this is AllReviews-", allRevs)
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(&allRevs)
-	log.Println("AllReviews Info Complete")
+	// json.NewEncoder(w).Encode(&allRevs)
+	// log.Println("AllReviews Info Complete")
+	tmpl2 := template.Must(template.ParseFiles("./static/alphatree.html"))
+	tmpl2.Execute(w, allRevs)
 }
 
 func SetReviewToDeleteHandler(w http.ResponseWriter, r *http.Request) {
