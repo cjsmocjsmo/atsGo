@@ -36,7 +36,6 @@ COPY static/*.html ./static/
 COPY static/*.css ./static/
 COPY static/*.js ./static/
 COPY static/*.yaml ./static/
-COPY static/images/*.png ./static/images/
 COPY static/images/*.jpg ./static/images/
 COPY static/images/*.webp ./static/images/
 

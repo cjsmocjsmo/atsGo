@@ -2,7 +2,7 @@ version: "3.3"
 
 services:
   db:
-    image: mongo:4.4
+    image: mongo:4.2
     container_name: "atsGo_container"
     networks:
       - atsGo
@@ -10,12 +10,12 @@ services:
       - 27017:27017
 
   atsGo:
-    image: atsgo:1.2.5
+    image: atsgo:1.2.6
     build: .
     environment:
-      - ATSGO_DB_ADDR="mongodb://db:27017/atsgodb"
-      - ATSGO_SERVER_ADDR=http://localhost
-      # - ATSGO_SERVER_ADDR=http://192.168.0.90
+      - ATSGO_DB_ADDR=mongodb://db:27017/atsgodb
+      # - ATSGO_SERVER_ADDR=http://localhost
+      - ATSGO_SERVER_ADDR=http://192.168.0.90
     networks:
       - atsGo
     ports:
