@@ -74,21 +74,6 @@ func Query(client *mongo.Client, ctx context.Context, dataBase, col string, quer
 	return
 }
 
-// func AtsGoFindOnePic(db string, coll string, filtertype string, filterstring string) PicStruct {
-// 	filter := bson.M{filtertype: filterstring}
-// 	client, ctx, cancel, err := Connect(os.Getenv("ATSGO_DB_ADDR"))
-// 	defer Close(client, ctx, cancel)
-// 	CheckError(err, "AtsGoFindOnePic: MongoDB connection has failed")
-// 	collection := client.Database(db).Collection(coll)
-// 	var results PicStruct
-// 	err = collection.FindOne(context.Background(), filter).Decode(&results)
-// 	if err != nil {
-// 		log.Println("AtsGoFindOnePic: find one has fucked up")
-// 		log.Fatal(err)
-// 	}
-// 	return results
-// }
-
 func CheckError(err error, msg string) {
 	if err != nil {
 		fmt.Println(msg)
@@ -188,8 +173,6 @@ func AllQuarintineReviewsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Printf("%s this is AllQuarintineReviews-", allQRevs)
 	w.Header().Set("Content-Type", "application/json")
-	// json.NewEncoder(w).Encode(&allQRevs)
-	// log.Println("AllQuarintineReviews Info Complete")
 	tmpl2 := template.Must(template.ParseFiles("./static/admin.html"))
 	tmpl2.Execute(w, allQRevs)
 }
@@ -212,8 +195,6 @@ func AllApprovedReviewsHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(&allRevs)
 	log.Println("AllReviews Info Complete")
-	// tmpl2 := template.Must(template.ParseFiles("./static/index.html"))
-	// tmpl2.Execute(w, allRevs)
 }
 
 func SetReviewToDeleteHandler(w http.ResponseWriter, r *http.Request) {
@@ -240,8 +221,6 @@ func ProcessQuarantineHandler(w http.ResponseWriter, r *http.Request) {
 	if err = cur.All(context.TODO(), &allRevs); err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("%s this is AllQuarintineReviews-", allRevs)
-
 	for _, rev := range allRevs {
 		filter := bson.M{"uuid": rev.UUID}
 		update := bson.M{"$set": bson.M{"approved": "yes", "quarintine": "no"}}
@@ -250,7 +229,6 @@ func ProcessQuarantineHandler(w http.ResponseWriter, r *http.Request) {
 		CheckError(err, "MongoDB connection has failed")
 		UpdateOne(client, ctx, filter, "maindb", "main", update)
 	}
-
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode("Update complete")
 	log.Println("AllQuarintineReviews Info Complete")
