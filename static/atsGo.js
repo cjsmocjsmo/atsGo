@@ -15,25 +15,25 @@ function initLoadReviews() {
     })
 }
 
-// function initLoadQReviews() {
-//     $('.reviewadmin').empty();
-//     $.get('/AllQReviews', function (data) {
-//         console.log(data);
-//         $.each(data, function (key, val) {
-//             let one = "<div class='reviewTop' style='margin: 1em' id='" + val.UUID + "'>";
-//             let two = "<div class='qborder'>";
-//             let three = "<h5 >Review" + key + "</h5>";
-//             let threea = "<p>Name: " + val.Name + "</p>";
-//             let threeb = "<p>Email: " + val.Email + "</p>"
-//             let threec = "<p>Unique ID: " + val.UUID + "</p>"
-//             let four = "<p>Message: " + val.Message + "</p>";
-//             let five = "<p>Signature: " + val.Sig + "</p>";
-//             let six = "<button class='delBtn' data-delBtnId='" + val.UUID + "'>Delete Review</button></div></div>"
-//             let newReview = one + two + three + threea + threeb + threec + four + five + six;
-//             $('.reviewadmin').append(newReview);
-//         })
-//     })
-// }
+function initLoadQReviews() {
+    $('.reviewadmin').empty();
+    $.get('/AllQReviews', function (data) {
+        console.log(data);
+        $.each(data, function (key, val) {
+            let one = "<div class='reviewTop' style='margin: 1em' id='" + val.UUID + "'>";
+            let two = "<div class='qborder'>";
+            let three = "<h5 >Review" + key + "</h5>";
+            let threea = "<p>Name: " + val.Name + "</p>";
+            let threeb = "<p>Email: " + val.Email + "</p>"
+            let threec = "<p>Unique ID: " + val.UUID + "</p>"
+            let four = "<p>Message: " + val.Message + "</p>";
+            let five = "<p>Signature: " + val.Sig + "</p>";
+            let six = "<button class='delBtn' data-delBtnId='" + val.UUID + "'>Delete Review</button></div></div>"
+            let newReview = one + two + three + threea + threeb + threec + four + five + six;
+            $('.reviewadmin').append(newReview);
+        })
+    })
+}
 
 // function fadeinout() {
 //     $('.aniMain').delay(2750).fadeOut(750);

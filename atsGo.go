@@ -98,7 +98,7 @@ func ShowAdmin(w http.ResponseWriter, r *http.Request) {
 }
 
 func AlphaT_Insert(db string, coll string, ablob ReviewStruct) {
-	client, ctx, cancel, err := Connect(os.Getenv("ATSGO_DB_ADDR"))
+	client, ctx, cancel, err := Connect("mongodb://db:27017/atsgodb")
 	CheckError(err, "AlphaT_Insert_: Connections has failed")
 	defer Close(client, ctx, cancel)
 	_, err2 := InsertOne(client, ctx, db, coll, ablob)
@@ -106,11 +106,11 @@ func AlphaT_Insert(db string, coll string, ablob ReviewStruct) {
 }
 
 func AlphaT_Insert_Pics(db string, coll string, picinfo PicStruct) {
-	client, ctx, cancel, err := Connect(os.Getenv("ATSGO_DB_ADDR"))
-	CheckError(err, "AlphaT_Insert_: Connections has failed")
+	client, ctx, cancel, err := Connect("mongodb://db:27017/atsgodb")
+	CheckError(err, "AlphaT_Insert_Pics: Connections has failed")
 	defer Close(client, ctx, cancel)
 	_, err2 := InsertOne(client, ctx, db, coll, picinfo)
-	CheckError(err2, "AlphaT_Insert_has failed")
+	CheckError(err2, "AlphaT_Insert_Picshas failed")
 }
 
 func AddToQuarantineHandler(w http.ResponseWriter, r *http.Request) {
@@ -161,7 +161,7 @@ func AllQuarintineReviewsHandler(w http.ResponseWriter, r *http.Request) {
 	filter := bson.M{"approved": "no", "quarintine": "yes", "delete": "no"}
 	opts := options.Find()
 	opts.SetProjection(bson.M{"_id": 0})
-	client, ctx, cancel, err := Connect(os.Getenv("ATSGO_DB_ADDR"))
+	client, ctx, cancel, err := Connect("mongodb://db:27017/atsgodb")
 	defer Close(client, ctx, cancel)
 	CheckError(err, "MongoDB connection has failed")
 	coll := client.Database("maindb").Collection("main")
@@ -173,15 +173,14 @@ func AllQuarintineReviewsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Printf("%s this is AllQuarintineReviews-", allQRevs)
 	w.Header().Set("Content-Type", "application/json")
-	tmpl2 := template.Must(template.ParseFiles("./static/admin.html"))
-	tmpl2.Execute(w, allQRevs)
+	json.NewEncoder(w).Encode(&allQRevs)
 }
 
 func AllApprovedReviewsHandler(w http.ResponseWriter, r *http.Request) {
 	filter := bson.M{"approved": "yes", "quarintine": "no", "delete": "no"}
 	opts := options.Find()
 	opts.SetProjection(bson.M{"_id": 0})
-	client, ctx, cancel, err := Connect(os.Getenv("ATSGO_DB_ADDR"))
+	client, ctx, cancel, err := Connect("mongodb://db:27017/atsgodb")
 	defer Close(client, ctx, cancel)
 	CheckError(err, "MongoDB connection has failed")
 	coll := client.Database("maindb").Collection("main")
@@ -201,7 +200,7 @@ func SetReviewToDeleteHandler(w http.ResponseWriter, r *http.Request) {
 	var delUUID string = r.URL.Query().Get("uuid")
 	filter := bson.M{"uuid": delUUID}
 	update := bson.M{"$set": bson.M{"delete": "yes"}}
-	client, ctx, cancel, err := Connect(os.Getenv("ATSGO_DB_ADDR"))
+	client, ctx, cancel, err := Connect("mongodb://db:27017/atsgodb")
 	defer Close(client, ctx, cancel)
 	CheckError(err, "MongoDB connection has failed")
 	UpdateOne(client, ctx, filter, "maindb", "main", update)
@@ -211,7 +210,7 @@ func ProcessQuarantineHandler(w http.ResponseWriter, r *http.Request) {
 	filter := bson.M{}
 	opts := options.Find()
 	opts.SetProjection(bson.M{"_id": 0})
-	client, ctx, cancel, err := Connect(os.Getenv("ATSGO_DB_ADDR"))
+	client, ctx, cancel, err := Connect("mongodb://db:27017/atsgodb")
 	defer Close(client, ctx, cancel)
 	CheckError(err, "MongoDB connection has failed")
 	coll := client.Database("maindb").Collection("main")
@@ -224,7 +223,7 @@ func ProcessQuarantineHandler(w http.ResponseWriter, r *http.Request) {
 	for _, rev := range allRevs {
 		filter := bson.M{"uuid": rev.UUID}
 		update := bson.M{"$set": bson.M{"approved": "yes", "quarintine": "no"}}
-		client, ctx, cancel, err := Connect(os.Getenv("ATSGO_DB_ADDR"))
+		client, ctx, cancel, err := Connect("mongodb://db:27017/atsgodb")
 		defer Close(client, ctx, cancel)
 		CheckError(err, "MongoDB connection has failed")
 		UpdateOne(client, ctx, filter, "maindb", "main", update)
@@ -238,7 +237,7 @@ func BackupReviewHandler(w http.ResponseWriter, r *http.Request) {
 	filter := bson.M{}
 	opts := options.Find()
 	opts.SetProjection(bson.M{"_id": 0})
-	client, ctx, cancel, err := Connect(os.Getenv("ATSGO_DB_ADDR"))
+	client, ctx, cancel, err := Connect("mongodb://db:27017/atsgodb")
 	defer Close(client, ctx, cancel)
 	CheckError(err, "MongoDB connection has failed")
 	coll := client.Database("maindb").Collection("main")
@@ -283,7 +282,7 @@ func ShowGalleryPage1Handler(w http.ResponseWriter, r *http.Request) {
 	filter := bson.M{"page": "1"}
 	opts := options.Find()
 	opts.SetProjection(bson.M{"_id": 0})
-	client, ctx, cancel, err := Connect(os.Getenv("ATSGO_DB_ADDR"))
+	client, ctx, cancel, err := Connect("mongodb://db:27017/atsgodb")
 	defer Close(client, ctx, cancel)
 	CheckError(err, "MongoDB connection has failed")
 	coll := client.Database("picdb").Collection("portrait")
@@ -301,7 +300,7 @@ func ShowGalleryPage2Handler(w http.ResponseWriter, r *http.Request) {
 	filter := bson.M{"page": "2"}
 	opts := options.Find()
 	opts.SetProjection(bson.M{"_id": 0})
-	client, ctx, cancel, err := Connect(os.Getenv("ATSGO_DB_ADDR"))
+	client, ctx, cancel, err := Connect("mongodb://db:27017/atsgodb")
 	defer Close(client, ctx, cancel)
 	CheckError(err, "MongoDB connection has failed")
 	coll := client.Database("picdb").Collection("landscape")
@@ -317,7 +316,7 @@ func ShowGalleryPage2Handler(w http.ResponseWriter, r *http.Request) {
 
 func AtsGoFindOnePic(db string, coll string, filtertype string, filterstring string) PicStruct {
 	filter := bson.M{filtertype: filterstring}
-	client, ctx, cancel, err := Connect(os.Getenv("ATSGO_DB_ADDR"))
+	client, ctx, cancel, err := Connect("mongodb://db:27017/atsgodb")
 	defer Close(client, ctx, cancel)
 	CheckError(err, "AtsGoFindOnePic: MongoDB connection has failed")
 	collection := client.Database(db).Collection(coll)
