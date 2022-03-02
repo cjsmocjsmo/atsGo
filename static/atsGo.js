@@ -1,19 +1,19 @@
-// function initLoadReviews() {
-//     $('.review1').empty();
-//     $.get('/AllApprovedReviews', function (data) {
-//         console.log(data);
-//         $.each(data, function (key, val) {
-//             let one = "<div class='rev-card'>";
-//             let two = "<div class='rev-card-body'>";
-//             let three = "<h5 class='rev-card-title'>Review</h5>";
-//             let four = "<p class='rev-cbod'>" + val.Message + "</p>";
-//             let five = "<p class='rev-csig'>" + val.Sig + "</p>";
-//             let six = "</div></div>";
-//             let newReview = one + two + three + four + five + six;
-//             $('.review1').append(newReview);
-//         })
-//     })
-// }
+function initLoadReviews() {
+    $('.review1').empty();
+    $.get('/AllApprovedReviews', function (data) {
+        console.log(data);
+        $.each(data, function (key, val) {
+            let one = "<div class='rev-card'>";
+            let two = "<div class='rev-card-body'>";
+            let three = "<h5 class='rev-card-title'>Review</h5>";
+            let four = "<p class='rev-cbod'>" + val.Message + "</p>";
+            let five = "<p class='rev-csig'>" + val.Sig + "</p>";
+            let six = "</div></div>";
+            let newReview = one + two + three + four + five + six;
+            $('.review1').append(newReview);
+        })
+    })
+}
 
 // function initLoadQReviews() {
 //     $('.reviewadmin').empty();
@@ -97,7 +97,7 @@ $(document).on("click", "#revInput", function (event) {
 
 $(document).ready(function () {
     // fadeinout();
-    // initLoadReviews();
+    initLoadReviews();
     initLoadQReviews();
 });
 
