@@ -12,5 +12,5 @@ apt-get auto-remove -y && \
 
 
 
-apt-get install -y docker-ce docker-ce-cli containerd.io && \
+apt-get install -y docker-ce docker-ce-cli containerd.io
 
